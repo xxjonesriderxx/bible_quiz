@@ -1,14 +1,13 @@
 import 'package:bible_quiz/model/Question.dart';
+import 'package:bible_quiz/ui/CustomCard.dart';
+import 'package:bible_quiz/ui/Result.dart';
 import 'package:flutter/material.dart';
 
-class Quiz extends StatefulWidget{
-  static int currentQuestion;
+class Quiz extends StatefulWidget {
   final int numberOfQuestions;
   final Chapter chapter;
 
-  Quiz({Key key, this.numberOfQuestions, this.chapter}) : super(key: key) {
-    currentQuestion = 0;
-  }
+  const Quiz({Key key, this.numberOfQuestions, this.chapter}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -21,24 +20,28 @@ class _State extends State<Quiz>{
   final int numberOfQuestions;
   final Chapter chapter;
   int numberOfCards;
+  int _correctAnswered = 0;
   static const double _paddingBetweenQuestionAndAnswer = 8;
   static const double _paddingLeftRight = 32;
   static const double _heightOfCard = 80;
   bool _answered = false;
   int _chosen;
+  int _currentQuestion = 0;
+
   List<Color> colorsOfButtons = [];
-  Color defaultColor = Colors.blue;
-  Color correctColor = Colors.green;
+  Color defaultColor = Colors.white;
+  Color correctColor = Colors.lightGreen;
   Color wrongColor = Colors.red;
-  Color solutionColor = Colors.green;
+  Color solutionColor = Colors.lightGreen;
 
   _State({this.numberOfQuestions, this.chapter});
 
   @override
   void initState() {
+    List<Question> randomizedQuestions = Question.getRandomQuestions();
     if (questions.isEmpty) {
       if (chapter != null) {
-        allQuestions.forEach((question) {
+        randomizedQuestions.forEach((question) {
           if (question.chapter.contains(chapter)) {
             if (numberOfQuestions != null) {
               if (questions.length < numberOfQuestions) {
@@ -50,7 +53,7 @@ class _State extends State<Quiz>{
           }
         });
       } else if (numberOfQuestions != null) {
-        allQuestions.forEach((question) {
+        randomizedQuestions.forEach((question) {
           if (question.chapter.contains(chapter)) {
             if (questions.length < numberOfQuestions) {
               questions.add(question);
@@ -58,16 +61,16 @@ class _State extends State<Quiz>{
           }
         });
       } else {
-        questions.addAll(allQuestions);
+        questions.addAll(randomizedQuestions);
       }
     }
     initColors();
-    numberOfCards = 1 + questions[Quiz.currentQuestion].answers.length;
+    numberOfCards = 1 + questions[_currentQuestion].answers.length;
   }
 
   void initColors() {
     colorsOfButtons = [];
-    for (int i = 0; i < questions[Quiz.currentQuestion].answers.length; i++) {
+    for (int i = 0; i < questions[_currentQuestion].answers.length; i++) {
       colorsOfButtons.add(defaultColor);
     }
   }
@@ -78,7 +81,7 @@ class _State extends State<Quiz>{
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-            "Frage ${Quiz.currentQuestion + 1} von ${numberOfQuestions != null ? numberOfQuestions : allQuestions.length}"),
+            "Frage ${_currentQuestion + 1} von ${numberOfQuestions != null ? numberOfQuestions : questions.length}"),
       ),
       body: Container(
         padding: EdgeInsets.only(top: 16),
@@ -104,8 +107,8 @@ class _State extends State<Quiz>{
               child: Icon(Icons.arrow_forward_ios),
               onPressed: () {
                 setState(() {
-                  if (Quiz.currentQuestion < questions.length - 1) {
-                    Quiz.currentQuestion++;
+                  if (_currentQuestion < questions.length - 1) {
+                    _currentQuestion++;
                     initState();
                     setState(() {
                       _chosen = null;
@@ -113,6 +116,14 @@ class _State extends State<Quiz>{
                     });
                   } else {
                     //show result
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Result(
+                                correctAnswered: _correctAnswered,
+                                totalQuestions: questions.length,
+                              )),
+                    );
                   }
                 });
               },
@@ -122,15 +133,40 @@ class _State extends State<Quiz>{
   }
 
   Widget _getQuestion(){
-    return _getCard(questions[Quiz.currentQuestion].question, Theme.of(context).primaryColor, true);
+    return CustomCard(
+      callback: null,
+      backgroundColor: Theme.of(context).primaryColor,
+      tapAble: false,
+      text: questions[_currentQuestion].question,
+      height: _heightOfCard,
+    );
   }
 
   Widget _getAnswers() {
     List<Widget> allAnswers = [];
-    for (int i = 0; i < questions[Quiz.currentQuestion].answers.length; i++) {
-      allAnswers.add(_getCard(
-          questions[Quiz.currentQuestion].answers[i], Colors.blueGrey, false,
-          indexOfQuestion: i));
+    for (int i = 0; i < questions[_currentQuestion].answers.length; i++) {
+      allAnswers.add(CustomCard(
+        callback: () {
+          setState(() {
+            if (!_answered) {
+              if (questions[_currentQuestion].solutionIndex == i) {
+                colorsOfButtons[i] = correctColor;
+                _correctAnswered++;
+              } else {
+                colorsOfButtons[i] = wrongColor;
+                colorsOfButtons[questions[_currentQuestion].solutionIndex] =
+                    solutionColor;
+              }
+              _chosen = i;
+              _answered = true;
+            }
+          });
+        },
+        backgroundColor: colorsOfButtons[i],
+        tapAble: true,
+        text: questions[_currentQuestion].answers[i],
+        height: _heightOfCard,
+      ));
     }
     return SingleChildScrollView(
       child: Column(
@@ -139,54 +175,4 @@ class _State extends State<Quiz>{
     );
   }
 
-  Card _getCard(String text, Color color, bool question,
-      {int indexOfQuestion}) {
-    debugPrint("number of cards: " + numberOfCards.toString());
-    return Card(
-      color: color,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6.0),
-      ),
-      child: question
-          ? Container(
-              //question container
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width - _paddingLeftRight,
-              height: _heightOfCard,
-              padding: EdgeInsets.all(16),
-              child: Text(text),
-            ):ElevatedButton(
-              //answer button
-              style: ElevatedButton.styleFrom(
-                primary: colorsOfButtons[indexOfQuestion], // background
-                onPrimary: Colors.black, // foreground
-              ),
-              child: Container(
-                color: colorsOfButtons[indexOfQuestion],
-                alignment: Alignment.center,
-                width:
-                    MediaQuery.of(context).size.width - _paddingLeftRight * 2,
-                height: _heightOfCard,
-                padding: EdgeInsets.all(16),
-                child: Text(text),
-              ),
-              onPressed: () {
-                setState(() {
-                  if (!_answered) {
-                    if (questions[Quiz.currentQuestion].solutionIndex ==
-                        indexOfQuestion) {
-                      colorsOfButtons[indexOfQuestion] = correctColor;
-                    } else {
-                      colorsOfButtons[indexOfQuestion] = wrongColor;
-                      colorsOfButtons[questions[Quiz.currentQuestion]
-                          .solutionIndex] = solutionColor;
-                    }
-                    _chosen = indexOfQuestion;
-                    _answered = true;
-                  }
-                });
-              },
-            ),
-    );
-  }
 }

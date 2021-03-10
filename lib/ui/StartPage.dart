@@ -1,3 +1,4 @@
+import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/Quiz.dart';
 import 'package:flutter/material.dart';
 
@@ -19,17 +20,17 @@ class _State extends State<StartPage>{
         title: Text("Bibelquiz"),
       ),
       body: Center(
-        child: ElevatedButton(
-          child: Text("Quiz starten"),
-          onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Quiz()),
-            );
-          },
-        ),
-      ),
+          child: CustomCard(
+        tapAble: true,
+        callback: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Quiz()),
+          );
+        },
+        text: "Quiz starten",
+        height: 80,
+      )),
     );
   }
-
 }
