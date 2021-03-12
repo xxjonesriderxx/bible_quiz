@@ -1,6 +1,7 @@
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/Result.dart';
+import 'package:bible_quiz/ui/SnackBarProgressIndicator.dart';
 import 'package:flutter/material.dart';
 
 class Quiz extends StatefulWidget {
@@ -11,23 +12,33 @@ class Quiz extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _State();
+    return _State(numberOfQuestions: numberOfQuestions, chapter: chapter);
   }
 }
 
-class _State extends State<Quiz>{
+class _State extends State<Quiz> with TickerProviderStateMixin {
+  /*
+  for logic
+   */
   List<Question> questions = [];
   final int numberOfQuestions;
   final Chapter chapter;
   int numberOfCards;
   int _correctAnswered = 0;
+  bool _answered = false;
+
+  //at the moment not used
+  int _chosen;
+  int _currentQuestion = 0;
+  static const Duration _autoSkipSeconds = Duration(seconds: 10);
+  ScaffoldMessengerState scaffoldMessenger;
+
+  /*
+  for ui
+   */
   static const double _paddingBetweenQuestionAndAnswer = 8;
   static const double _paddingLeftRight = 32;
   static const double _heightOfCard = 80;
-  bool _answered = false;
-  int _chosen;
-  int _currentQuestion = 0;
-
   List<Color> colorsOfButtons = [];
   Color defaultColor = Colors.white;
   Color correctColor = Colors.lightGreen;
@@ -77,11 +88,11 @@ class _State extends State<Quiz>{
 
   @override
   Widget build(BuildContext context) {
+    scaffoldMessenger = ScaffoldMessenger.of(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-            "Frage ${_currentQuestion + 1} von ${numberOfQuestions != null ? numberOfQuestions : questions.length}"),
+        title: Text("Frage ${_currentQuestion + 1} von ${numberOfQuestions != null ? numberOfQuestions : questions.length}"),
       ),
       body: Container(
         padding: EdgeInsets.only(top: 16),
@@ -90,49 +101,50 @@ class _State extends State<Quiz>{
           //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _getQuestion(),
-            Padding(
-                padding:
-                    EdgeInsets.only(top: _paddingBetweenQuestionAndAnswer)),
+            Padding(padding: EdgeInsets.only(top: _paddingBetweenQuestionAndAnswer)),
             Container(
               //padding: EdgeInsets.only(left: _paddingLeftRight, right: _paddingLeftRight),
               child: Expanded(
                 child: _getAnswers(),
               ),
-            )
+            ),
           ],
         ),
       ),
       floatingActionButton: _answered
           ? FloatingActionButton(
               child: Icon(Icons.arrow_forward_ios),
-              onPressed: () {
-                setState(() {
-                  if (_currentQuestion < questions.length - 1) {
-                    _currentQuestion++;
-                    initState();
-                    setState(() {
-                      _chosen = null;
-                      _answered = false;
-                    });
-                  } else {
-                    //show result
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Result(
-                                correctAnswered: _correctAnswered,
-                                totalQuestions: questions.length,
-                              )),
-                    );
-                  }
-                });
-              },
+              onPressed: _goToNextQuestion,
             )
           : Container(),
     );
   }
 
-  Widget _getQuestion(){
+  void _goToNextQuestion() {
+    scaffoldMessenger.removeCurrentSnackBar();
+    setState(() {
+      if (_currentQuestion < questions.length - 1) {
+        _currentQuestion++;
+        initState();
+        setState(() {
+          _chosen = null;
+          _answered = false;
+        });
+      } else {
+        //show result
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Result(
+                    correctAnswered: _correctAnswered,
+                    totalQuestions: questions.length,
+                  )),
+        );
+      }
+    });
+  }
+
+  Widget _getQuestion() {
     return CustomCard(
       callback: null,
       backgroundColor: Theme.of(context).primaryColor,
@@ -142,20 +154,32 @@ class _State extends State<Quiz>{
     );
   }
 
+  @override
+  void dispose() {
+    scaffoldMessenger.hideCurrentSnackBar();
+    super.dispose();
+  }
+
   Widget _getAnswers() {
     List<Widget> allAnswers = [];
     for (int i = 0; i < questions[_currentQuestion].answers.length; i++) {
       allAnswers.add(CustomCard(
         callback: () {
           setState(() {
+            scaffoldMessenger.showSnackBar(SnackBar(
+              content: SnackBarProgressIndicator(
+                duration: _autoSkipSeconds,
+                onComplete: _goToNextQuestion,
+              ),
+              duration: _autoSkipSeconds,
+            ));
             if (!_answered) {
               if (questions[_currentQuestion].solutionIndex == i) {
                 colorsOfButtons[i] = correctColor;
                 _correctAnswered++;
               } else {
                 colorsOfButtons[i] = wrongColor;
-                colorsOfButtons[questions[_currentQuestion].solutionIndex] =
-                    solutionColor;
+                colorsOfButtons[questions[_currentQuestion].solutionIndex] = solutionColor;
               }
               _chosen = i;
               _answered = true;
