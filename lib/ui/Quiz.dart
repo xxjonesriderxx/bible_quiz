@@ -40,7 +40,6 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
   static const double _paddingLeftRight = 32;
   static const double _heightOfCard = 80;
   List<Color> colorsOfButtons = [];
-  Color defaultColor = Colors.white;
   Color correctColor = Colors.lightGreen;
   Color wrongColor = Colors.red;
   Color solutionColor = Colors.lightGreen;
@@ -59,12 +58,14 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
   void initColors() {
     colorsOfButtons = [];
     for (int i = 0; i < questions[_currentQuestion].answers.length; i++) {
-      colorsOfButtons.add(defaultColor);
+      //to use the theme config
+      colorsOfButtons.add(null);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var themeData = Theme.of(context);
     scaffoldMessenger = ScaffoldMessenger.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -72,6 +73,7 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
         title: Text("Frage ${_currentQuestion + 1} von ${numberOfQuestions != null ? numberOfQuestions : questions.length}"),
       ),
       body: Container(
+        color: themeData.backgroundColor,
         padding: EdgeInsets.only(top: 16),
         width: MediaQuery.of(context).size.width,
         child: Column(

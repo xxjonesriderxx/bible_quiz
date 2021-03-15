@@ -1,6 +1,6 @@
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
-import 'package:bible_quiz/ui/Result.dart';
+import 'package:bible_quiz/ui/MillionaireResult.dart';
 import 'package:bible_quiz/ui/SnackBarProgressIndicator.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +37,7 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
     "500.000 Euro",
     "1.000.000 Euro"
   ];
+  bool _failed = false;
 
   //at the moment not used
   int _chosen;
@@ -51,7 +52,6 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
   static const double _paddingLeftRight = 32;
   static const double _heightOfCard = 80;
   List<Color> colorsOfButtons = [];
-  Color defaultColor = Colors.white;
   Color correctColor = Colors.lightGreen;
   Color wrongColor = Colors.red;
   Color solutionColor = Colors.lightGreen;
@@ -70,12 +70,14 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
   void initColors() {
     colorsOfButtons = [];
     for (int i = 0; i < questions[_currentQuestion].answers.length; i++) {
-      colorsOfButtons.add(defaultColor);
+      //to use the theme config
+      colorsOfButtons.add(null);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var themeData = Theme.of(context);
     scaffoldMessenger = ScaffoldMessenger.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -83,6 +85,7 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
         title: Text("${MillionaireQuestions[_currentQuestion]} Frage"),
       ),
       body: Container(
+        color: themeData.backgroundColor,
         padding: EdgeInsets.only(top: 16),
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -111,7 +114,7 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
   void _goToNextQuestion() {
     scaffoldMessenger.removeCurrentSnackBar();
     setState(() {
-      if (_currentQuestion < questions.length - 1) {
+      if (_currentQuestion < questions.length - 1 && !_failed) {
         _currentQuestion++;
         initState();
         setState(() {
@@ -122,11 +125,7 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
         //show result
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) => Result(
-                    correctAnswered: _correctAnswered,
-                    totalQuestions: questions.length,
-                  )),
+          MaterialPageRoute(builder: (context) => MillionaireResult(correctAnswered: _correctAnswered, failed: _failed)),
         );
       }
     });
@@ -168,6 +167,7 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
               } else {
                 colorsOfButtons[i] = wrongColor;
                 colorsOfButtons[questions[_currentQuestion].solutionIndex] = solutionColor;
+                _failed = true;
               }
               _chosen = i;
               _answered = true;

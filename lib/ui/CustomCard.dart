@@ -18,9 +18,10 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var themeData = Theme.of(context);
     return Card(
       clipBehavior: Clip.antiAlias,
-      color: backgroundColor,
+      color: backgroundColor ?? themeData.cardColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -32,21 +33,24 @@ class CustomCard extends StatelessWidget {
               padding: EdgeInsets.all(16),
               child: Text(
                 text,
-                style: TextStyle(fontSize: 14),
+                style: TextStyle(fontSize: 14, color: themeData.accentColor),
               ),
-            )
+      )
           : ElevatedButton(
               //answer button
               style: ElevatedButton.styleFrom(
-                primary: backgroundColor, // background
+                primary: backgroundColor ?? themeData.cardColor, // background
                 onPrimary: Colors.black, // foreground
               ),
               child: Container(
-                color: backgroundColor,
+                color: backgroundColor ?? themeData.cardColor,
                 alignment: Alignment.center,
                 height: height,
                 padding: EdgeInsets.all(16),
-                child: Text(text),
+                child: Text(
+                  text,
+                  style: TextStyle(color: themeData.accentColor),
+                ),
               ),
               onPressed: callback,
             ),
