@@ -14,34 +14,60 @@ class Question {
   //number from 1 to 15
   final int difficulty;
 
-  const Question(
-      {this.imagePath,
-      @required this.chapter,
-      @required this.question,
-      @required this.answers,
-      @required this.solutionIndex,
-      @required this.difficulty});
+  //these are no solution tips but hints that explain the solution based on the Bible passage after answering
+  final String solutionNoteHuman;
+  final String solutionNoteURL;
 
-  static List<Question> getRandomQuestions() {
-    return _shuffle(Question._allQuestions);
+  //tip for the "Who Wants to be a Millionaire"-mode
+  final String tip;
+
+  const Question({this.imagePath, @required this.chapter, @required this.question, @required this.answers, @required this.solutionIndex, @required this.difficulty, this.solutionNoteHuman, this.solutionNoteURL, this.tip});
+
+  static List<Question> getRandomQuestions({int numberOfQuestions, Chapter chapter, bool millionaireMode = false}) {
+    List<Question> questions = [];
+    if (!millionaireMode) {
+      Question._allQuestions.forEach((question) {
+        if (numberOfQuestions != null
+            ? questions.length < numberOfQuestions
+            : true && chapter != null
+                ? question.chapter.contains(chapter)
+                : true) {
+          questions.add(question);
+        }
+      });
+      return _shuffle(questions);
+    } else {
+      var random = new Random();
+      for (int difficulty = 1; difficulty <= 15; difficulty++) {
+        List<Question> tempForDifficultySearch = [];
+        //get all questions with the wanted difficulty
+        Question._allQuestions.forEach((question) {
+          if (question.difficulty == difficulty) {
+            tempForDifficultySearch.add(question);
+          }
+        });
+        //now adding random question with this difficulty to our result list
+        var randomIndex = random.nextInt(tempForDifficultySearch.length);
+        questions.add(tempForDifficultySearch[randomIndex]);
+      }
+      return questions;
+    }
   }
 
   static List<Question> _shuffle(List<Question> list) {
-    List<Question> modifiableList = [];
-    modifiableList.addAll(list);
     var random = new Random();
 
     // Go through all elements.
-    for (var i = modifiableList.length - 1; i > 0; i--) {
+    for (var i = list.length - 1; i > 0; i--) {
       // Pick a pseudorandom number according to the list length
       var n = random.nextInt(i + 1);
 
-      var temp = modifiableList[i];
-      modifiableList[i] = modifiableList[n];
-      modifiableList[n] = temp;
+      var temp = list[i];
+      list[i] = list[n];
+      list[n] = temp;
     }
 
-    return modifiableList;
+    return list;
   }
 
   static const List<Question> _allQuestions = [
@@ -87,17 +113,71 @@ class Question {
         answers: const [
           "Es waren 12 Gebote.",
           "Ein Steinmetz von Mose",
-          "Mose selber",
-          "Gott"
-        ],
-        solutionIndex: 3,
-        difficulty: 3),
+          "Mose selber", "Gott"], solutionIndex: 3, difficulty: 3),
+    Question(chapter: const [Chapter.neuesTestament], question: "Wer war kein Jünger von Jesus?", answers: const ["Matthäus", "Johannes", "Lukas", "Philippus"], solutionIndex: 2, difficulty: 4),
+    Question(chapter: const [Chapter.altesTestament], question: "Der Herr ist mein ........, mir wird nichts mangeln.", answers: const ["Sieger", "Erlöser", "König", "Hirte"], solutionIndex: 3, difficulty: 1),
     Question(
         chapter: const [Chapter.neuesTestament],
-        question: "Wer war kein Jünger von Jesus?",
-        answers: const ["Matthäus", "Johannes", "Lukas", "Philippus"],
+        question: "Was hat Jesus nach seiner Auferstehung mit den Jüngern gegessen?",
+        answers: const ["Honig und Heuschrecken", "Currywurst und Pommes", "Lamm und Datteln", "Fisch und Brot"],
+        solutionIndex: 3,
+        difficulty: 2),
+    Question(chapter: const [Chapter.altesTestament], question: "Welchen Tieren wurde Daniel zum Fraß vorgeworfen?", answers: const ["Wildkatzen", "Krokodilen", "Tiger", "Löwen"], solutionIndex: 3, difficulty: 3),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "Wie zahlreich sollten Abrahams Nachkommen werden?",
+        answers: const ["wie das Wasser im Ozean", "wie die Muscheln am Strand", "wie die Sterne am Himmel", "wie die Insekten auf Erden"],
         solutionIndex: 2,
         difficulty: 4),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "Was antwortete Kain Gott?",
+        answers: const ["Ich habe meinen Bruder nicht erschlagen.", "Mein Bruder hat sich verlaufen.", "Mein Bruder ist tot.", "Muss ich immer auf meinen Bruder aufpassen!?"],
+        solutionIndex: 3,
+        difficulty: 5),
+    Question(
+        chapter: const [Chapter.neuesTestament],
+        question: "Mit was vergleicht Jesus das Himmelreich einmal?",
+        answers: const ["Mit einer fleißigen Ameise.", "Mit einer vergrabenen Kartoffel", "Mit einem gefüllten Fass Wein.", "Mit einem verbrogenen Schatz."],
+        solutionIndex: 3,
+        difficulty: 6),
+    Question(
+        chapter: const [Chapter.neuesTestament],
+        question: "Wem verspricht Jesus in den Seligpreisungen, dass sie das Erdreich besitzen werden?",
+        answers: const ["den geistlichen Armen", "den Sanftmütigen", "den Friedfertigen", "denen, die sich nach Gerechtigkeit sehnen"],
+        solutionIndex: 1,
+        difficulty: 7),
+    Question(chapter: const [Chapter.altesTestament], question: "Wie nennt Isaak einmal einen Brunnen?", answers: const ["Bank", "Rank", "Zank", "Tank"], solutionIndex: 2, difficulty: 8),
+    Question(chapter: const [Chapter.neuesTestament], question: "'Auf den Fels gebaut' und 'auf Sand gebaut' bezieht Jesus auf was?", answers: const ["Turm", "Haus", "Brücke", "Tempel"], solutionIndex: 1, difficulty: 9),
+    Question(chapter: const [Chapter.altesTestament], question: "Wo strandete die Arche Noah?", answers: const ["Auf dem Berg Horeb", "Unbekannt", "Auf dem Gebirge Ararat", "Auf dem Gebirge Gilead"], solutionIndex: 2, difficulty: 10),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "In welchem Buch der Bibel findet man die Vision über die Frau in der Tonne?",
+        answers: const ["Sacharja", "Hesekiel", "Offenbarung", "Daniel"],
+        solutionIndex: 0,
+        difficulty: 11,
+        solutionNoteHuman: "Sach 5,5-8",
+        solutionNoteURL: "https://www.bible.com/de/bible/73/zec.5.5-8"),
+    Question(chapter: const [Chapter.altesTestament], question: "Wie viele Verse hat der längste Psalm?", answers: const ["97", "176", "218", "274"], solutionIndex: 1, difficulty: 12),
+    Question(
+        chapter: const [Chapter.neuesTestament],
+        question: "Was taten Jesus und die Jünger als letztes bevor sie zum Ölberg gingen?",
+        answers: const ["Sie aßen", "Sie sangen ein Loblied", "Sie tranken", "Sie wuschen sich"],
+        solutionIndex: 1,
+        difficulty: 13),
+    Question(
+        chapter: const [Chapter.neuesTestament],
+        question: "Weshalb wissen 'wir', dass 'wir' laut dem 1. Johannes aus dem Tod in das Leben gekommen sind?",
+        answers: const ["Weil 'wir' Gott fürchten.", "Weil 'wir' Gottes Gnade empfangen haben.", "Weil 'wir' unsere Brüder lieben.", "Weil Jesus Christus für 'uns' starb."],
+        solutionIndex: 2,
+        difficulty: 14),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "Welche zwei Männer gerieten im Lager und nicht im Offenbarungszelt in prophetische Verzückung?",
+        answers: const ["Eldad und Medad", "Nun und Schelach", "Jered und Levi", "Almodad, Schelef"],
+        solutionIndex: 0,
+        difficulty: 15)
+
     /*Question(
       chapter: const [Chapter.neuesTestament],
       question: "Seit wann heißt Saulus Paulus?",

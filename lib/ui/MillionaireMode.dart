@@ -4,19 +4,13 @@ import 'package:bible_quiz/ui/Result.dart';
 import 'package:bible_quiz/ui/SnackBarProgressIndicator.dart';
 import 'package:flutter/material.dart';
 
-class Quiz extends StatefulWidget {
-  final int numberOfQuestions;
-  final Chapter chapter;
-
-  const Quiz({Key key, this.numberOfQuestions, this.chapter}) : super(key: key);
-
+//TODO change result widget, break after wrong question and go to result widget
+class MillionaireMode extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _State(numberOfQuestions: numberOfQuestions, chapter: chapter);
-  }
+  State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<Quiz> with TickerProviderStateMixin {
+class _State extends State<MillionaireMode> with TickerProviderStateMixin {
   /*
   for logic
    */
@@ -26,6 +20,23 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
   int numberOfCards;
   int _correctAnswered = 0;
   bool _answered = false;
+  static const List<String> MillionaireQuestions = [
+    "50 Euro",
+    "100 Euro",
+    "200 Euro",
+    "300 Euro",
+    "500 Euro",
+    "1.000 Euro",
+    "2.000 Euro",
+    "4.000 Euro",
+    "8.000 Euro",
+    "16.000 Euro",
+    "32.000 Euro",
+    "64.000 Euro",
+    "125.000 Euro",
+    "500.000 Euro",
+    "1.000.000 Euro"
+  ];
 
   //at the moment not used
   int _chosen;
@@ -50,7 +61,7 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
   @override
   void initState() {
     if (questions.isEmpty) {
-      questions = Question.getRandomQuestions(numberOfQuestions: numberOfQuestions, chapter: chapter);
+      questions = Question.getRandomQuestions(numberOfQuestions: 15, millionaireMode: true);
     }
     initColors();
     numberOfCards = 1 + questions[_currentQuestion].answers.length;
@@ -69,7 +80,7 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Frage ${_currentQuestion + 1} von ${numberOfQuestions != null ? numberOfQuestions : questions.length}"),
+        title: Text("${MillionaireQuestions[_currentQuestion]} Frage"),
       ),
       body: Container(
         padding: EdgeInsets.only(top: 16),
@@ -175,5 +186,4 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
       ),
     );
   }
-
 }
