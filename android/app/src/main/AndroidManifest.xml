@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.jonaslungruen.bible_quiz">
    <application
-        android:label="bible_quiz"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Bibelquiz"
+       android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

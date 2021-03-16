@@ -225,7 +225,15 @@ class Question {
         answers: const ["Ehre und Stärke und Lob und Preis und Weisheit.", "Weisheit und Stärke und Ehre und Preis und Lob.", "Ehre und Preis und Lob und Weisheit und Stärke.", "Ehre und Stärke und Lob und Weisheit und Preis."],
         solutionIndex: 1,
         difficulty: 15),
-    Question(chapter: const [Chapter.altesTestament, Chapter.neuesTestament], question: "Was ist laut der Bibel der Anfang aller Erkenntnis?", answers: const ["Weisheit", "Gottesfurcht", "Glaube", "Buße"], solutionIndex: 1, difficulty: 3),
+    Question(
+        chapter: const [Chapter.altesTestament, Chapter.neuesTestament],
+        question: "Was ist laut der Bibel der Anfang aller Erkenntnis?",
+        answers: const ["Weisheit", "Gottesfurcht", "Glaube", "Buße"],
+        solutionIndex: 1,
+        difficulty: 3,
+        solutionNoteURL: "https://www.bible.com/de/bible/73/pro.1.7",
+        solutionNoteHuman: "Sprüche 1, 7",
+        tip: "Sprüche 1, 7"),
   ];
 }
 
