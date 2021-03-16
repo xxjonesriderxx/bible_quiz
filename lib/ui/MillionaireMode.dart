@@ -1,3 +1,4 @@
+import 'package:bible_quiz/main.dart';
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/MillionaireResult.dart';
@@ -86,7 +87,7 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
       ),
       body: Container(
         color: themeData.backgroundColor,
-        padding: EdgeInsets.only(top: 16),
+        padding: EdgeInsets.only(top: 16, left: rootContainerPadding.left, right: rootContainerPadding.right),
         width: MediaQuery.of(context).size.width,
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.center,

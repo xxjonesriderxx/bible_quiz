@@ -22,7 +22,7 @@ class MillionaireResult extends StatelessWidget {
     double widthHeightOfPictures = MediaQuery.of(context).size.width / 2;
     String text = "";
     if (failed) {
-      text = "Deine letzte antwort war leider falsch, du hast $correctAnswered von 15 Fragen richtig beantwortet. Bleib am Ball, du lernst die Bibel gerade kennen.";
+      text = "Deine letzte Antwort war leider falsch, du hast $correctAnswered von 15 Fragen richtig beantwortet. Bleib am Ball, du lernst die Bibel gerade kennen.";
     } else {
       text = "Glückwunsch, du bist reich an Bibelwissen!";
     }

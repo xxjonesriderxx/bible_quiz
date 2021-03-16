@@ -1,6 +1,8 @@
 import 'package:bible_quiz/ui/StartPage.dart';
 import 'package:flutter/material.dart';
 
+const EdgeInsets rootContainerPadding = EdgeInsets.only(left: 8, right: 8);
+
 void main() async {
   runApp(MyApp());
 }

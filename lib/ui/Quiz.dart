@@ -1,3 +1,4 @@
+import 'package:bible_quiz/main.dart';
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/Result.dart';
@@ -70,11 +71,11 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Frage ${_currentQuestion + 1} von ${numberOfQuestions != null ? numberOfQuestions : questions.length}"),
+        title: Text("Frage ${_currentQuestion + 1} von ${questions.length}"),
       ),
       body: Container(
         color: themeData.backgroundColor,
-        padding: EdgeInsets.only(top: 16),
+        padding: EdgeInsets.only(top: 16, left: rootContainerPadding.left, right: rootContainerPadding.right),
         width: MediaQuery.of(context).size.width,
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,9 +116,9 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
           context,
           MaterialPageRoute(
               builder: (context) => Result(
-                    correctAnswered: _correctAnswered,
-                    totalQuestions: questions.length,
-                  )),
+                correctAnswered: _correctAnswered,
+                totalQuestions: questions.length,
+              )),
         );
       }
     });

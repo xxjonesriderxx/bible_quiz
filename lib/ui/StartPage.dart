@@ -1,6 +1,7 @@
+import 'package:bible_quiz/main.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/MillionaireMode.dart';
-import 'package:bible_quiz/ui/Quiz.dart';
+import 'package:bible_quiz/ui/QuizFilter.dart';
 import 'package:flutter/material.dart';
 
 class StartPage extends StatefulWidget{
@@ -22,6 +23,7 @@ class _State extends State<StartPage>{
           title: Text("Bibelquiz"),
         ),
         body: Container(
+          padding: rootContainerPadding,
           color: themeData.backgroundColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +33,7 @@ class _State extends State<StartPage>{
                 callback: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Quiz()),
+                    MaterialPageRoute(builder: (context) => QuizFilter()),
                   );
                 },
                 text: "Quiz starten",
