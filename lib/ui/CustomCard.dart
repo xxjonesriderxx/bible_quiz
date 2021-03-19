@@ -33,7 +33,7 @@ class CustomCard extends StatelessWidget {
               padding: EdgeInsets.all(16),
               child: Text(
                 text,
-                style: TextStyle(fontSize: 14, color: themeData.accentColor),
+                style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyText1.color),
               ),
       )
           : ElevatedButton(
@@ -49,7 +49,7 @@ class CustomCard extends StatelessWidget {
                 padding: EdgeInsets.all(16),
                 child: Text(
                   text,
-                  style: TextStyle(color: themeData.accentColor),
+                  style: TextStyle(color: themeData.textTheme.bodyText1.color),
                 ),
               ),
               onPressed: callback,

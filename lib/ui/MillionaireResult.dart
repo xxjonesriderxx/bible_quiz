@@ -67,7 +67,7 @@ class MillionaireResult extends StatelessWidget {
                       Text(
                         text,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, color: themeData.accentColor),
+                        style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyText1.color),
                       ),
                     ],
                   ),

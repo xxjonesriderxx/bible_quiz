@@ -37,7 +37,7 @@ class _State extends State<QuizFilter> {
                     width: MediaQuery.of(context).size.width / 2,
                     child: Text(
                       "Kapitel",
-                      style: TextStyle(color: themeData.accentColor),
+                      style: TextStyle(color: themeData.textTheme.bodyText1.color),
                     ),
                   ),
                   Expanded(
@@ -53,7 +53,7 @@ class _State extends State<QuizFilter> {
                             value: value,
                             child: new Text(
                               Question.chapterMap[value] ?? "",
-                              style: TextStyle(color: themeData.accentColor),
+                              style: TextStyle(color: themeData.textTheme.bodyText1.color),
                             ),
                           );
                         }).toList(),
@@ -76,7 +76,7 @@ class _State extends State<QuizFilter> {
                     width: MediaQuery.of(context).size.width / 2,
                     child: Text(
                       "Anzahl der Fragen",
-                      style: TextStyle(color: themeData.accentColor),
+                      style: TextStyle(color: themeData.textTheme.bodyText1.color),
                     ),
                   ),
                   Expanded(
@@ -92,7 +92,7 @@ class _State extends State<QuizFilter> {
                               value: value,
                               child: new Text(
                                 value ?? "",
-                                style: TextStyle(color: themeData.accentColor),
+                                style: TextStyle(color: themeData.textTheme.bodyText1.color),
                               ),
                             );
                           }).toList(),

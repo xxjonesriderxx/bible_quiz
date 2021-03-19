@@ -129,7 +129,7 @@ class Question {
     Question(
         chapter: const [Chapter.neuesTestament],
         question: "Mit was vergleicht Jesus das Himmelreich einmal?",
-        answers: const ["Mit einer fleißigen Ameise.", "Mit einer vergrabenen Kartoffel", "Mit einem gefüllten Fass Wein.", "Mit einem verbrogenen Schatz."],
+        answers: const ["Mit einer fleißigen Ameise.", "Mit einer vergrabenen Kartoffel", "Mit einem gefüllten Fass Wein.", "Mit einem verborgenen Schatz."],
         solutionIndex: 3,
         difficulty: 6),
     Question(
@@ -168,7 +168,7 @@ class Question {
         answers: const ["Eldad und Medad", "Nun und Schelach", "Jered und Levi", "Almodad, Schelef"],
         solutionIndex: 0,
         difficulty: 15),
-    Question(chapter: const [Chapter.altesTestament], question: "Wie nannte man einen König der Ägypter?", answers: ["Big Boss", "Cäsar", "King Kong", "Phara"], solutionIndex: 3, difficulty: 1),
+    Question(chapter: const [Chapter.altesTestament], question: "Wie nannte man einen König der Ägypter?", answers: ["Big Boss", "Cäsar", "King Kong", "Pharao"], solutionIndex: 3, difficulty: 1),
     Question(chapter: const [Chapter.neuesTestament], question: "Wie groß war die Anzahl der Schafe bei Jesu Geburt?", answers: const ["zwölf", "Das wird nirgend in der Bibel erähnt.", "drei", "null"], solutionIndex: 1, difficulty: 2),
     Question(
         chapter: const [Chapter.altesTestament],

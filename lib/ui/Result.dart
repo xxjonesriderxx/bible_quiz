@@ -68,7 +68,7 @@ class Result extends StatelessWidget {
                       child: Text(
                         text,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, color: themeData.accentColor),
+                        style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyText1.color),
                       ),
                     ),
                   ],
