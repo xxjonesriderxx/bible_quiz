@@ -1,6 +1,6 @@
 import 'package:bible_quiz/main.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
-import 'package:bible_quiz/ui/MillionaireMode.dart';
+import 'package:bible_quiz/ui/BiblionaireMode.dart';
 import 'package:bible_quiz/ui/QuizFilter.dart';
 import 'package:flutter/material.dart';
 
@@ -45,10 +45,10 @@ class _State extends State<StartPage>{
                 callback: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MillionaireMode()),
+                    MaterialPageRoute(builder: (context) => BiblionaireMode()),
                   );
                 },
-                text: "Wer wird Millionär",
+                text: "Wer wird Biblionär",
                 height: 80,
                 backgroundColor: Colors.blue,
               ),

@@ -1,17 +1,17 @@
 import 'package:bible_quiz/main.dart';
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
-import 'package:bible_quiz/ui/MillionaireResult.dart';
+import 'package:bible_quiz/ui/BiblionaireResult.dart';
 import 'package:bible_quiz/ui/SnackBarProgressIndicator.dart';
 import 'package:flutter/material.dart';
 
 //TODO change result widget, break after wrong question and go to result widget
-class MillionaireMode extends StatefulWidget {
+class BiblionaireMode extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _State();
 }
 
-class _State extends State<MillionaireMode> with TickerProviderStateMixin {
+class _State extends State<BiblionaireMode> with TickerProviderStateMixin {
   /*
   for logic
    */
@@ -21,7 +21,7 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
   int numberOfCards;
   int _correctAnswered = 0;
   bool _answered = false;
-  static const List<String> MillionaireQuestions = [
+  static const List<String> BiblionaireQuestions = [
     "50 Euro",
     "100 Euro",
     "200 Euro",
@@ -62,7 +62,7 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
   @override
   void initState() {
     if (questions.isEmpty) {
-      questions = Question.getRandomQuestions(numberOfQuestions: 15, millionaireMode: true);
+      questions = Question.getRandomQuestions(numberOfQuestions: 15, biblionaireMode: true);
     }
     initColors();
     numberOfCards = 1 + questions[_currentQuestion].answers.length;
@@ -83,7 +83,7 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("${MillionaireQuestions[_currentQuestion]} Frage"),
+        title: Text("${BiblionaireQuestions[_currentQuestion]} Frage"),
       ),
       body: Container(
         color: themeData.backgroundColor,
@@ -126,7 +126,7 @@ class _State extends State<MillionaireMode> with TickerProviderStateMixin {
         //show result
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MillionaireResult(correctAnswered: _correctAnswered, failed: _failed)),
+          MaterialPageRoute(builder: (context) => BiblionaireResult(correctAnswered: _correctAnswered, failed: _failed)),
         );
       }
     });

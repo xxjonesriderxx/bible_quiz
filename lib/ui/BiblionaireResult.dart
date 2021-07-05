@@ -8,13 +8,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wc_flutter_share/wc_flutter_share.dart';
 
-class MillionaireResult extends StatelessWidget {
+class BiblionaireResult extends StatelessWidget {
   final int correctAnswered;
   final bool failed;
 
   GlobalKey _screenshotContainer = new GlobalKey();
 
-  MillionaireResult({Key key, @required this.correctAnswered, @required this.failed}) : super(key: key);
+  BiblionaireResult({Key key, @required this.correctAnswered, @required this.failed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

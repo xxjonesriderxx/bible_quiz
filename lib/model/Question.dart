@@ -18,14 +18,14 @@ class Question {
   final String solutionNoteHuman;
   final String solutionNoteURL;
 
-  //tip for the "Who Wants to be a Millionaire"-mode
+  //tip for the "Who Wants to be a Biblionaire"-mode
   final String tip;
 
   const Question({this.imagePath, @required this.chapter, @required this.question, @required this.answers, @required this.solutionIndex, @required this.difficulty, this.solutionNoteHuman, this.solutionNoteURL, this.tip});
 
-  static List<Question> getRandomQuestions({int numberOfQuestions, Chapter chapter, bool millionaireMode = false}) {
+  static List<Question> getRandomQuestions({int numberOfQuestions, Chapter chapter, bool biblionaireMode = false}) {
     List<Question> questions = [];
-    if (!millionaireMode) {
+    if (!biblionaireMode) {
       Question._allQuestions.forEach((question) {
         if ((numberOfQuestions != null ? questions.length < numberOfQuestions : true) && (chapter != null ? question.chapter.contains(chapter) : true)) {
           questions.add(question);
@@ -66,49 +66,24 @@ class Question {
     return list;
   }
 
-  static const Map<Chapter, String> chapterMap = {Chapter.neuesTestament: "Neues Testament", Chapter.altesTestament: "Altes Testament"};
+  static const Map<Chapter, String> chapterMap = {Chapter.neuesTestament: "Neues Testament", Chapter.altesTestament: "Altes Testament", Chapter.juengerUndApostel: "Jünger und Apostel"};
 
   static const List<Question> _allQuestions = [
     Question(chapter: const [Chapter.altesTestament], question: "Wo verwirrte Gott die Sprache der Menschen?", answers: const ["In Jericho", "In Babylon", "In Babel", "In Sinai"], solutionIndex: 2, difficulty: 1),
-    Question(chapter: const [Chapter.altesTestament], question: "Aus was erschuf Gott die Frau?",
-        answers: const ["Jochbein", "Ferse", "Schlüsselbein", "Rippe", "Staub"],
-        solutionIndex: 3,
-        difficulty: 1),
+    Question(chapter: const [Chapter.altesTestament], question: "Aus was erschuf Gott die Frau?", answers: const ["Jochbein", "Ferse", "Schlüsselbein", "Rippe", "Staub"], solutionIndex: 3, difficulty: 1),
+    Question(chapter: const [Chapter.neuesTestament], question: "Auf welchem Baum saß Zachäus?", answers: const ["Maulbeer-Feigenbaum", "Olivenbaum", "Zedernbaum", "Johannisbrotbaum"], solutionIndex: 0, difficulty: 7),
     Question(
-        chapter: const [Chapter.neuesTestament],
-        question: "Auf welchem Baum saß Zachäus?",
-        answers: const [
-          "Maulbeer-Feigenbaum",
-          "Olivenbaum",
-          "Zedernbaum",
-          "Johannisbrotbaum"
-        ],
-        solutionIndex: 0,
-        difficulty: 7),
-    Question(
-        chapter: const [Chapter.neuesTestament],
-        question:
-            "Von welchem dieser Personen wird berichtet, dass er auf dem Wasser ging?",
+        chapter: const [Chapter.neuesTestament, Chapter.juengerUndApostel],
+        question: "Von welchem dieser Personen wird berichtet, dass er auf dem Wasser ging?",
         answers: const ["Petrus", "Johannes", "Lukas", "Matthäus"],
         solutionIndex: 0,
         difficulty: 1),
-    Question(
-        chapter: const [Chapter.altesTestament],
-        question: "Wer bekam die 10 Gebote von Gott?",
-        answers: const ["Aaron", "Jakob", "Mose", "Abraham"],
-        solutionIndex: 2,
-        difficulty: 2),
-    Question(
-        chapter: const [Chapter.altesTestament],
-        question: "Wer schrieb die 10 Gebote?",
-        answers: const [
-          "Es waren 12 Gebote.",
-          "Ein Steinmetz von Mose",
-          "Mose selber", "Gott"], solutionIndex: 3, difficulty: 3),
-    Question(chapter: const [Chapter.neuesTestament], question: "Wer war kein Jünger von Jesus?", answers: const ["Matthäus", "Johannes", "Lukas", "Philippus"], solutionIndex: 2, difficulty: 4),
+    Question(chapter: const [Chapter.altesTestament], question: "Wer bekam die 10 Gebote von Gott?", answers: const ["Aaron", "Jakob", "Mose", "Abraham"], solutionIndex: 2, difficulty: 2),
+    Question(chapter: const [Chapter.altesTestament], question: "Wer schrieb die 10 Gebote?", answers: const ["Es waren 12 Gebote.", "Ein Steinmetz von Mose", "Mose selber", "Gott"], solutionIndex: 3, difficulty: 3),
+    Question(chapter: const [Chapter.neuesTestament, Chapter.juengerUndApostel], question: "Wer war kein Jünger von Jesus?", answers: const ["Matthäus", "Johannes", "Lukas", "Philippus"], solutionIndex: 2, difficulty: 4),
     Question(chapter: const [Chapter.altesTestament], question: "Der Herr ist mein ........, mir wird nichts mangeln.", answers: const ["Sieger", "Erlöser", "König", "Hirte"], solutionIndex: 3, difficulty: 1),
     Question(
-        chapter: const [Chapter.neuesTestament],
+        chapter: const [Chapter.neuesTestament, Chapter.juengerUndApostel],
         question: "Was hat Jesus nach seiner Auferstehung mit den Jüngern gegessen?",
         answers: const ["Honig und Heuschrecken", "Currywurst und Pommes", "Lamm und Datteln", "Fisch und Brot"],
         solutionIndex: 3,
@@ -151,7 +126,7 @@ class Question {
         solutionNoteURL: "https://www.bible.com/de/bible/73/zec.5.5-8"),
     Question(chapter: const [Chapter.altesTestament], question: "Wie viele Verse hat der längste Psalm?", answers: const ["97", "176", "218", "274"], solutionIndex: 1, difficulty: 12),
     Question(
-        chapter: const [Chapter.neuesTestament],
+        chapter: const [Chapter.neuesTestament, Chapter.juengerUndApostel],
         question: "Was taten Jesus und die Jünger als letztes bevor sie zum Ölberg gingen?",
         answers: const ["Sie aßen", "Sie sangen ein Loblied", "Sie tranken", "Sie wuschen sich"],
         solutionIndex: 1,
@@ -234,10 +209,57 @@ class Question {
         solutionNoteURL: "https://www.bible.com/de/bible/73/pro.1.7",
         solutionNoteHuman: "Sprüche 1, 7",
         tip: "Sprüche 1, 7"),
+    Question(
+        chapter: const [Chapter.juengerUndApostel, Chapter.neuesTestament],
+        question: "Welcher Satz stammt von Jesus ?",
+        answers: const ["Ich bin bei Euch alle Tage bis zum Ende der Welt.", "Ende gut - Alles gut!", "Bleibt immer cool!", "Und Tschüss!"],
+        solutionIndex: 0,
+        difficulty: 1),
+    Question(
+        chapter: const [Chapter.juengerUndApostel, Chapter.altesTestament],
+        question: "Wieso waren Josefs Brüder neidisch auf ihn?",
+        answers: const ["Ihr Vater schenkte ihm einen Esel.", "Josef erhielt eine reiche Erbschaft.", "Josef hatte die schönste Frau.", "Ihr Vater liebte Josef mehr als sie."],
+        solutionIndex: 3,
+        difficulty: 2),
+    Question(
+        chapter: const [Chapter.juengerUndApostel, Chapter.altesTestament],
+        question: "Worüber staunten die Menschen, als an Pfingsten der Geist Gottes auf die Apostel herabgekommen war?",
+        answers: const ["Die Apostel begannen zu schweben.", "100 weiße Tauben flogen auf.", "Jeder hörte die Apostel in seiner eigenen Sprache reden.", "Die Apostel hatten Heiligenscheine."],
+        solutionIndex: 2,
+        difficulty: 1),
+    Question(
+        chapter: const [Chapter.juengerUndApostel, Chapter.altesTestament], question: "Judas wurde für den Verrat an Jesus belohnt mit ...", answers: const ["Wein.", "einem Hahn.", "Gold.", "Silbergeld."], solutionIndex: 3, difficulty: 2),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "Was sagte Gott am ersten Tag der Schöpfung?",
+        answers: const ["Das Chaos hat nun ein Ende.", "Es werde Licht.", "Sonne, Mond und Sterne sollen leuchten.", "Ich erschaffe jetzt Mann und Frau."],
+        solutionIndex: 1,
+        difficulty: 1),
+    Question(chapter: const [Chapter.altesTestament], question: "Wozu erschuf Gott Sonne und Mond?", answers: const ["zur Zeitbestimmung", "als Lichtquellen", "aus Spaß ", "als Wärmequellen"], solutionIndex: 0, difficulty: 5),
+    Question(
+        chapter: const [Chapter.altesTestament], question: "Was wurde zuerst erschaffen?", answers: const ["die Menschen", "die Vögel", "die Fische", "die Säugetiere"], solutionIndex: 2, difficulty: 3, tip: "Wurden am 5. Tag erschaffen"),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "Was tat Gott am Schöpfungstag?",
+        answers: const ["Er erschuf die Frau.", "Er erschuf Mann und Frau.", "Er ruhte aus.", "Er vernichtete alles, was ererschaffen hatte."],
+        solutionIndex: 2,
+        difficulty: 1),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "Wann wurde der Menscherschaffen?",
+        answers: const ["am 3. Tag", "am 4. Tag", "am 5. Tag", "am 6. Tag"],
+        solutionIndex: 3,
+        difficulty: 1,
+        tip: "Der Mensch ist die Krönung der Schöpfung."),
+    Question(
+        chapter: const [Chapter.altesTestament], question: "Wie beurteilte Gott sein Werk?", answers: const ["Er fand es unvollständig.", "Er fand es schlecht.", "Er fand es gut.", "Er fand es langweilig"], solutionIndex: 2, difficulty: 1),
+    Question(chapter: const [Chapter.altesTestament], question: "Wann wurden die Pflanzen erschaffen?", answers: const ["am 2. Tag", "am 3. Tag", "am 4. Tag", "am 5. Tag"], solutionIndex: 3, difficulty: 4),
+    Question(chapter: const [Chapter.altesTestament], question: "Wer wird in der Schöpfungsgeschichte nicht genannt?", answers: const ["die Vögel", "die Fische", "die Menschen", "die Affen"], solutionIndex: 3, difficulty: 1)
   ];
 }
 
 enum Chapter {
   neuesTestament,
   altesTestament,
+  juengerUndApostel,
 }
