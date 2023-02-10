@@ -1,20 +1,18 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wc_flutter_share/wc_flutter_share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class BiblionaireResult extends StatelessWidget {
   final int correctAnswered;
   final bool failed;
 
-  GlobalKey _screenshotContainer = new GlobalKey();
+  GlobalKey _screenshotContainerKey = new GlobalKey();
 
-  BiblionaireResult({Key key, @required this.correctAnswered, @required this.failed}) : super(key: key);
+  BiblionaireResult({Key? key, required this.correctAnswered, required this.failed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +32,9 @@ class BiblionaireResult extends StatelessWidget {
           child: Stack(
             children: [
               RepaintBoundary(
-                key: _screenshotContainer,
+                key: _screenshotContainerKey,
                 child: Container(
-                  color: themeData.backgroundColor,
+                  color: themeData.colorScheme.background,
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: Column(
@@ -67,7 +65,7 @@ class BiblionaireResult extends StatelessWidget {
                       Text(
                         text,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyText1.color),
+                        style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyLarge?.color),
                       ),
                     ],
                   ),
@@ -101,10 +99,11 @@ class BiblionaireResult extends StatelessWidget {
   }
 
   _share() async {
-    RenderRepaintBoundary boundary = _screenshotContainer.currentContext.findRenderObject();
+    RenderRepaintBoundary boundary = _screenshotContainerKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage();
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData.buffer.asUint8List();
-    await WcFlutterShare.share(sharePopupTitle: 'Teilen', fileName: 'Bibelquiz Ergebnis.png', mimeType: 'image/png', bytesOfFile: pngBytes);
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List? pngBytes = byteData?.buffer.asUint8List();
+    XFile file = new XFile.fromData(pngBytes!, mimeType: 'image/png');
+    await Share.shareXFiles([file], text: 'Teilen', subject: 'Bibelquiz Ergebnis.png');
   }
 }

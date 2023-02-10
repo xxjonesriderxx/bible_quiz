@@ -1,7 +1,7 @@
 import 'package:bible_quiz/main.dart';
 import 'package:bible_quiz/model/Question.dart';
-import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/BiblionaireResult.dart';
+import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/SnackBarProgressIndicator.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +16,7 @@ class _State extends State<BiblionaireMode> with TickerProviderStateMixin {
   for logic
    */
   List<Question> questions = [];
-  final int numberOfQuestions;
-  final Chapter chapter;
-  int numberOfCards;
+  late int numberOfCards;
   int _correctAnswered = 0;
   bool _answered = false;
   static const List<String> BiblionaireQuestions = [
@@ -41,10 +39,10 @@ class _State extends State<BiblionaireMode> with TickerProviderStateMixin {
   bool _failed = false;
 
   //at the moment not used
-  int _chosen;
+  int? _chosen;
   int _currentQuestion = 0;
   static const Duration _autoSkipSeconds = Duration(seconds: 10);
-  ScaffoldMessengerState scaffoldMessenger;
+  late ScaffoldMessengerState scaffoldMessenger;
 
   /*
   for ui
@@ -52,12 +50,12 @@ class _State extends State<BiblionaireMode> with TickerProviderStateMixin {
   static const double _paddingBetweenQuestionAndAnswer = 8;
   static const double _paddingLeftRight = 32;
   static const double _heightOfCard = 80;
-  List<Color> colorsOfButtons = [];
+  List<Color?> colorsOfButtons = [];
   Color correctColor = Colors.lightGreen;
   Color wrongColor = Colors.red;
   Color solutionColor = Colors.lightGreen;
 
-  _State({this.numberOfQuestions, this.chapter});
+  _State();
 
   @override
   void initState() {
@@ -86,7 +84,7 @@ class _State extends State<BiblionaireMode> with TickerProviderStateMixin {
         title: Text("${BiblionaireQuestions[_currentQuestion]} Frage"),
       ),
       body: Container(
-        color: themeData.backgroundColor,
+        color: themeData.colorScheme.background,
         padding: EdgeInsets.only(top: 16, left: rootContainerPadding.left, right: rootContainerPadding.right),
         width: MediaQuery.of(context).size.width,
         child: Column(

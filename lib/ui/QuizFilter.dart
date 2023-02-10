@@ -10,7 +10,7 @@ class QuizFilter extends StatefulWidget {
 }
 
 class _State extends State<QuizFilter> {
-  Chapter selectedChapter;
+  Chapter? selectedChapter;
   int numberOfQuestions = 24;
   static const int int64MaxValue = 9223372036854775807;
 
@@ -25,7 +25,7 @@ class _State extends State<QuizFilter> {
         body: Container(
           padding: rootContainerPadding,
           width: MediaQuery.of(context).size.width,
-          color: themeData.backgroundColor,
+          color: themeData.colorScheme.background,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -37,7 +37,7 @@ class _State extends State<QuizFilter> {
                     width: MediaQuery.of(context).size.width / 2,
                     child: Text(
                       "Kapitel",
-                      style: TextStyle(color: themeData.textTheme.bodyText1.color),
+                      style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
                     ),
                   ),
                   Expanded(
@@ -46,20 +46,20 @@ class _State extends State<QuizFilter> {
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.blue, border: Border.all()),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<Chapter>(
-                        dropdownColor: themeData.backgroundColor,
+                        dropdownColor: themeData.colorScheme.background,
                         value: selectedChapter,
                         items: Chapter.values.map((Chapter value) {
                           return new DropdownMenuItem<Chapter>(
                             value: value,
                             child: new Text(
                               Question.chapterMap[value] ?? "",
-                              style: TextStyle(color: themeData.textTheme.bodyText1.color),
+                              style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
                             ),
                           );
                         }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            selectedChapter = value;
+                            selectedChapter = value!;
                           });
                         },
                       ),
@@ -76,7 +76,7 @@ class _State extends State<QuizFilter> {
                     width: MediaQuery.of(context).size.width / 2,
                     child: Text(
                       "Anzahl der Fragen",
-                      style: TextStyle(color: themeData.textTheme.bodyText1.color),
+                      style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
                     ),
                   ),
                   Expanded(
@@ -85,14 +85,14 @@ class _State extends State<QuizFilter> {
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.blue, border: Border.all()),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
-                          dropdownColor: themeData.backgroundColor,
+                          dropdownColor: themeData.colorScheme.background,
                           value: numberOfQuestions == int64MaxValue ? 'Alle' : numberOfQuestions.toString(),
                           items: <String>['16', '24', '32', '48', '64', 'Alle'].map((String value) {
                             return new DropdownMenuItem<String>(
                               value: value,
                               child: new Text(
-                                value ?? "",
-                                style: TextStyle(color: themeData.textTheme.bodyText1.color),
+                                value,
+                                style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
                               ),
                             );
                           }).toList(),
@@ -101,7 +101,7 @@ class _State extends State<QuizFilter> {
                               if (value == "Alle") {
                                 numberOfQuestions = int64MaxValue;
                               } else {
-                                numberOfQuestions = int.tryParse(value);
+                                numberOfQuestions = int.tryParse(value!)!;
                               }
                             });
                           },

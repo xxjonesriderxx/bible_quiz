@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 
 class Quiz extends StatefulWidget {
   final int numberOfQuestions;
-  final Chapter chapter;
+  final Chapter? chapter;
 
-  const Quiz({Key key, this.numberOfQuestions, this.chapter}) : super(key: key);
+  Quiz({Key? key, required this.numberOfQuestions, this.chapter}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,16 +23,16 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
    */
   List<Question> questions = [];
   final int numberOfQuestions;
-  final Chapter chapter;
-  int numberOfCards;
+  final Chapter? chapter;
+  late int numberOfCards;
   int _correctAnswered = 0;
   bool _answered = false;
 
   //at the moment not used
-  int _chosen;
+  int? _chosen;
   int _currentQuestion = 0;
   static const Duration _autoSkipSeconds = Duration(seconds: 10);
-  ScaffoldMessengerState scaffoldMessenger;
+  late ScaffoldMessengerState scaffoldMessenger;
 
   /*
   for ui
@@ -40,12 +40,12 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
   static const double _paddingBetweenQuestionAndAnswer = 8;
   static const double _paddingLeftRight = 32;
   static const double _heightOfCard = 80;
-  List<Color> colorsOfButtons = [];
+  List<Color?> colorsOfButtons = [];
   Color correctColor = Colors.lightGreen;
   Color wrongColor = Colors.red;
   Color solutionColor = Colors.lightGreen;
 
-  _State({this.numberOfQuestions, this.chapter});
+  _State({required this.numberOfQuestions, this.chapter});
 
   @override
   void initState() {
@@ -74,7 +74,7 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
         title: Text("Frage ${_currentQuestion + 1} von ${questions.length}"),
       ),
       body: Container(
-        color: themeData.backgroundColor,
+        color: themeData.colorScheme.background,
         padding: EdgeInsets.only(top: 16, left: rootContainerPadding.left, right: rootContainerPadding.right),
         width: MediaQuery.of(context).size.width,
         child: Column(

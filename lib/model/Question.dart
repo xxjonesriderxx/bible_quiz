@@ -1,10 +1,8 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
-
 class Question {
   final List<Chapter> chapter;
-  final String imagePath;
+  final String? imagePath;
   final String question;
   final List<String> answers;
 
@@ -15,15 +13,15 @@ class Question {
   final int difficulty;
 
   //these are no solution tips but hints that explain the solution based on the Bible passage after answering
-  final String solutionNoteHuman;
-  final String solutionNoteURL;
+  final String? solutionNoteHuman;
+  final String? solutionNoteURL;
 
   //tip for the "Who Wants to be a Biblionaire"-mode
-  final String tip;
+  final String? tip;
 
-  const Question({this.imagePath, @required this.chapter, @required this.question, @required this.answers, @required this.solutionIndex, @required this.difficulty, this.solutionNoteHuman, this.solutionNoteURL, this.tip});
+  const Question({this.imagePath, required this.chapter, required this.question, required this.answers, required this.solutionIndex, required this.difficulty, this.solutionNoteHuman, this.solutionNoteURL, this.tip});
 
-  static List<Question> getRandomQuestions({int numberOfQuestions, Chapter chapter, bool biblionaireMode = false}) {
+  static List<Question> getRandomQuestions({required int numberOfQuestions, Chapter? chapter, bool biblionaireMode = false}) {
     List<Question> questions = [];
     if (!biblionaireMode) {
       Question._allQuestions.forEach((question) {
@@ -238,19 +236,6 @@ class Question {
     Question(chapter: const [Chapter.altesTestament], question: "Wozu erschuf Gott Sonne und Mond?", answers: const ["zur Zeitbestimmung", "als Lichtquellen", "aus Spaß ", "als Wärmequellen"], solutionIndex: 0, difficulty: 5),
     Question(
         chapter: const [Chapter.altesTestament], question: "Was wurde zuerst erschaffen?", answers: const ["die Menschen", "die Vögel", "die Fische", "die Säugetiere"], solutionIndex: 2, difficulty: 3, tip: "Wurden am 5. Tag erschaffen"),
-    Question(
-        chapter: const [Chapter.altesTestament],
-        question: "Was tat Gott am Schöpfungstag?",
-        answers: const ["Er erschuf die Frau.", "Er erschuf Mann und Frau.", "Er ruhte aus.", "Er vernichtete alles, was ererschaffen hatte."],
-        solutionIndex: 2,
-        difficulty: 1),
-    Question(
-        chapter: const [Chapter.altesTestament],
-        question: "Wann wurde der Menscherschaffen?",
-        answers: const ["am 3. Tag", "am 4. Tag", "am 5. Tag", "am 6. Tag"],
-        solutionIndex: 3,
-        difficulty: 1,
-        tip: "Der Mensch ist die Krönung der Schöpfung."),
     Question(
         chapter: const [Chapter.altesTestament], question: "Wie beurteilte Gott sein Werk?", answers: const ["Er fand es unvollständig.", "Er fand es schlecht.", "Er fand es gut.", "Er fand es langweilig"], solutionIndex: 2, difficulty: 1),
     Question(chapter: const [Chapter.altesTestament], question: "Wann wurden die Pflanzen erschaffen?", answers: const ["am 2. Tag", "am 3. Tag", "am 4. Tag", "am 5. Tag"], solutionIndex: 3, difficulty: 4),

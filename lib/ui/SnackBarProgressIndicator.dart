@@ -4,7 +4,7 @@ class SnackBarProgressIndicator extends StatefulWidget {
   final Duration duration;
   final VoidCallback onComplete;
 
-  const SnackBarProgressIndicator({Key key, @required this.duration, @required this.onComplete}) : super(key: key);
+  const SnackBarProgressIndicator({Key? key, required this.duration, required this.onComplete}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -14,10 +14,10 @@ class SnackBarProgressIndicator extends StatefulWidget {
 
 class _State extends State<SnackBarProgressIndicator> with TickerProviderStateMixin {
   final Duration duration;
-  final VoidCallback onComplete;
-  AnimationController controller;
+  final VoidCallback? onComplete;
+  AnimationController? controller;
 
-  _State({this.duration, this.onComplete});
+  _State({required this.duration, this.onComplete});
 
   @override
   void initState() {
@@ -25,9 +25,10 @@ class _State extends State<SnackBarProgressIndicator> with TickerProviderStateMi
       vsync: this,
       duration: duration,
     );
-    controller.forward().whenComplete(() => onComplete());
-    controller.addListener(() {
-      if (mounted && !controller.isDismissed) {
+    controller?.forward().whenComplete(() => onComplete!());
+    controller?.addListener(() {
+      bool dismissed = controller?.isDismissed ?? true;
+      if (mounted && !dismissed) {
         setState(() {});
       }
     });
@@ -36,15 +37,15 @@ class _State extends State<SnackBarProgressIndicator> with TickerProviderStateMi
   @override
   Widget build(BuildContext context) {
     return LinearProgressIndicator(
-      value: controller.value,
+      value: controller?.value,
       semanticsLabel: 'Linear progress indicator',
     );
   }
 
   @override
   void dispose() {
-    controller.stop();
-    controller.dispose();
+    controller?.stop();
+    controller?.dispose();
     super.dispose();
   }
 }

@@ -1,6 +1,6 @@
 import 'package:bible_quiz/main.dart';
-import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/BiblionaireMode.dart';
+import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/QuizFilter.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +24,7 @@ class _State extends State<StartPage>{
         ),
         body: Container(
           padding: rootContainerPadding,
-          color: themeData.backgroundColor,
+          color: themeData.colorScheme.background,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

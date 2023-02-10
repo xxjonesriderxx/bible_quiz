@@ -11,8 +11,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.blue, backgroundColor: Colors.white, cardColor: Colors.white, cardTheme: CardTheme(color: Colors.white), textTheme: TextTheme(bodyText1: TextStyle(color: Colors.black))),
-      darkTheme: ThemeData(primarySwatch: Colors.blue, backgroundColor: Colors.black, cardColor: Colors.blueGrey, cardTheme: CardTheme(color: Colors.blueGrey), textTheme: TextTheme(bodyText1: TextStyle(color: Colors.white))),
+      theme: ThemeData(
+          cardColor: Colors.white,
+          cardTheme: CardTheme(color: Colors.white),
+          textTheme: TextTheme(bodyLarge: TextStyle(color: Colors.black)),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(background: Colors.white)),
+      darkTheme: ThemeData(
+          cardColor: Colors.blueGrey,
+          cardTheme: CardTheme(color: Colors.blueGrey),
+          textTheme: TextTheme(bodyLarge: TextStyle(color: Colors.white)),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(background: Colors.black)),
       home: StartPage(),
     );
   }

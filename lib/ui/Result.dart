@@ -1,12 +1,10 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wc_flutter_share/wc_flutter_share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Result extends StatelessWidget {
   final int correctAnswered;
@@ -18,7 +16,7 @@ class Result extends StatelessWidget {
 
   GlobalKey _screenshotContainer = new GlobalKey();
 
-  Result({Key key, @required this.correctAnswered, @required this.totalQuestions}) : super(key: key);
+  Result({Key? key, required this.correctAnswered, required this.totalQuestions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +42,7 @@ class Result extends StatelessWidget {
         title: Text("Auswertung"),
       ),
       body: Container(
-        color: themeData.backgroundColor,
+        color: themeData.colorScheme.background,
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
@@ -68,7 +66,7 @@ class Result extends StatelessWidget {
                       child: Text(
                         text,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyText1.color),
+                        style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyLarge?.color),
                       ),
                     ),
                   ],
@@ -102,11 +100,12 @@ class Result extends StatelessWidget {
   }
 
   _share() async {
-    RenderRepaintBoundary boundary = _screenshotContainer.currentContext.findRenderObject();
+    RenderRepaintBoundary boundary = _screenshotContainer.currentContext?.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage();
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData.buffer.asUint8List();
-    await WcFlutterShare.share(sharePopupTitle: 'Teilen', fileName: 'Bibelquiz Ergebnis.png', mimeType: 'image/png', bytesOfFile: pngBytes);
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List? pngBytes = byteData?.buffer.asUint8List();
+    XFile file = new XFile.fromData(pngBytes!, mimeType: 'image/png');
+    await Share.shareXFiles([file], text: 'Teilen', subject: 'Bibelquiz Ergebnis.png');
   }
 }
 

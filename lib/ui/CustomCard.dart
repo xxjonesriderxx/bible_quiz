@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
-  final VoidCallback callback;
-  final Color backgroundColor;
+  final VoidCallback? callback;
+  final Color? backgroundColor;
   final bool tapAble;
   final String text;
   final double height;
 
-  const CustomCard(
-      {Key key,
-      this.callback,
-      this.backgroundColor,
-      this.tapAble,
-      this.text,
-      this.height})
-      : super(key: key);
+  const CustomCard({Key? key, this.callback, this.backgroundColor, required this.tapAble, required this.text, required this.height}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +26,13 @@ class CustomCard extends StatelessWidget {
               padding: EdgeInsets.all(16),
               child: Text(
                 text,
-                style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyText1.color),
+                style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyLarge?.color),
               ),
       )
           : ElevatedButton(
               //answer button
               style: ElevatedButton.styleFrom(
-                primary: backgroundColor ?? themeData.cardColor, // background
-                onPrimary: Colors.black, // foreground
+                foregroundColor: Colors.black, backgroundColor: backgroundColor ?? themeData.cardColor, // foreground
               ),
               child: Container(
                 color: backgroundColor ?? themeData.cardColor,
@@ -49,7 +41,7 @@ class CustomCard extends StatelessWidget {
                 padding: EdgeInsets.all(16),
                 child: Text(
                   text,
-                  style: TextStyle(color: themeData.textTheme.bodyText1.color),
+                  style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
                 ),
               ),
               onPressed: callback,
