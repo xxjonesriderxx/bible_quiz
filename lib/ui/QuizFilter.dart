@@ -36,7 +36,7 @@ class _State extends State<QuizFilter> {
                     padding: EdgeInsets.only(right: 16),
                     width: MediaQuery.of(context).size.width / 2,
                     child: Text(
-                      "Kapitel",
+                      "Themenbereich",
                       style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
                     ),
                   ),

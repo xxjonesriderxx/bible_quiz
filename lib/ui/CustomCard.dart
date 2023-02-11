@@ -4,10 +4,17 @@ class CustomCard extends StatelessWidget {
   final VoidCallback? callback;
   final Color? backgroundColor;
   final bool tapAble;
-  final String text;
-  final double height;
+  final String? text;
+  final double? height;
+  final Widget? content;
 
-  const CustomCard({Key? key, this.callback, this.backgroundColor, required this.tapAble, required this.text, required this.height}) : super(key: key);
+  CustomCard({Key? key, this.callback, this.backgroundColor, required this.tapAble, required this.text, required this.height})
+      : this.content = null,
+        super(key: key);
+
+  CustomCard.withContent({Key? key, this.callback, this.backgroundColor, required this.tapAble, required this.content, required this.height})
+      : this.text = null,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +31,13 @@ class CustomCard extends StatelessWidget {
               alignment: Alignment.center,
               height: height,
               padding: EdgeInsets.all(16),
-              child: Text(
-                text,
-                style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyLarge?.color),
-              ),
-      )
+              child: content == null
+                  ? Text(
+                      text!,
+                      style: TextStyle(fontSize: 14, color: themeData.textTheme.bodyLarge?.color),
+                    )
+                  : content,
+            )
           : ElevatedButton(
               //answer button
               style: ElevatedButton.styleFrom(
@@ -39,10 +48,12 @@ class CustomCard extends StatelessWidget {
                 alignment: Alignment.center,
                 height: height,
                 padding: EdgeInsets.all(16),
-                child: Text(
-                  text,
-                  style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
-                ),
+                child: content == null
+                    ? Text(
+                        text!,
+                        style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
+                      )
+                    : content,
               ),
               onPressed: callback,
             ),

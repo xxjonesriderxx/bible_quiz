@@ -13,8 +13,8 @@ class Question {
   final int difficulty;
 
   //these are no solution tips but hints that explain the solution based on the Bible passage after answering
-  final String? solutionNoteHuman;
-  final String? solutionNoteURL;
+  final List<String>? solutionNoteHuman;
+  final List<String>? solutionNoteURL;
 
   //tip for the "Who Wants to be a Biblionaire"-mode
   final String? tip;
@@ -67,16 +67,29 @@ class Question {
   static const Map<Chapter, String> chapterMap = {Chapter.neuesTestament: "Neues Testament", Chapter.altesTestament: "Altes Testament", Chapter.juengerUndApostel: "Jünger und Apostel"};
 
   static const List<Question> _allQuestions = [
-    Question(chapter: const [Chapter.altesTestament], question: "Wo verwirrte Gott die Sprache der Menschen?", answers: const ["In Jericho", "In Babylon", "In Babel", "In Sinai"], solutionIndex: 2, difficulty: 1),
-    Question(chapter: const [Chapter.altesTestament], question: "Aus was erschuf Gott die Frau?", answers: const ["Jochbein", "Ferse", "Schlüsselbein", "Rippe", "Staub"], solutionIndex: 3, difficulty: 1),
-    Question(chapter: const [Chapter.neuesTestament], question: "Auf welchem Baum saß Zachäus?", answers: const ["Maulbeer-Feigenbaum", "Olivenbaum", "Zedernbaum", "Johannisbrotbaum"], solutionIndex: 0, difficulty: 7),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "Wo verwirrte Gott die Sprache der Menschen?",
+        answers: const ["In Jericho", "In Babylon", "In Babel", "In Sinai"],
+        solutionIndex: 2,
+        difficulty: 1,
+        imagePath: "towerOfBabelIsBuilt.png"),
+    Question(chapter: const [Chapter.altesTestament], question: "Aus was erschuf Gott die Frau?", answers: const ["Jochbein", "Ferse", "Schlüsselbein", "Rippe", "Staub"], solutionIndex: 3, difficulty: 1, imagePath: "adamSleepsInEden.jpeg"),
     Question(
         chapter: const [Chapter.neuesTestament, Chapter.juengerUndApostel],
         question: "Von welchem dieser Personen wird berichtet, dass er auf dem Wasser ging?",
         answers: const ["Petrus", "Johannes", "Lukas", "Matthäus"],
         solutionIndex: 0,
-        difficulty: 1),
-    Question(chapter: const [Chapter.altesTestament], question: "Wer bekam die 10 Gebote von Gott?", answers: const ["Aaron", "Jakob", "Mose", "Abraham"], solutionIndex: 2, difficulty: 2),
+        difficulty: 1,
+        imagePath: "petrusWalksOnWater.png"),
+    Question(
+      chapter: const [Chapter.altesTestament],
+      question: "Wer bekam die 10 Gebote von Gott?",
+      answers: const ["Aaron", "Jakob", "Mose", "Abraham"],
+      solutionIndex: 2,
+      difficulty: 2,
+    ),
+    Question(chapter: const [Chapter.neuesTestament], question: "Auf welchem Baum saß Zachäus?", answers: const ["Maulbeer-Feigenbaum", "Olivenbaum", "Zedernbaum", "Johannisbrotbaum"], solutionIndex: 0, difficulty: 7),
     Question(chapter: const [Chapter.altesTestament], question: "Wer schrieb die 10 Gebote?", answers: const ["Es waren 12 Gebote.", "Ein Steinmetz von Mose", "Mose selber", "Gott"], solutionIndex: 3, difficulty: 3),
     Question(chapter: const [Chapter.neuesTestament, Chapter.juengerUndApostel], question: "Wer war kein Jünger von Jesus?", answers: const ["Matthäus", "Johannes", "Lukas", "Philippus"], solutionIndex: 2, difficulty: 4),
     Question(chapter: const [Chapter.altesTestament], question: "Der Herr ist mein ........, mir wird nichts mangeln.", answers: const ["Sieger", "Erlöser", "König", "Hirte"], solutionIndex: 3, difficulty: 1),
@@ -120,8 +133,8 @@ class Question {
         answers: const ["Sacharja", "Hesekiel", "Offenbarung", "Daniel"],
         solutionIndex: 0,
         difficulty: 11,
-        solutionNoteHuman: "Sach 5,5-8",
-        solutionNoteURL: "https://www.bible.com/de/bible/73/zec.5.5-8"),
+        solutionNoteHuman: ["Sach 5,5-8"],
+        solutionNoteURL: ["https://www.bible.com/de/bible/73/zec.5.5-8"]),
     Question(chapter: const [Chapter.altesTestament], question: "Wie viele Verse hat der längste Psalm?", answers: const ["97", "176", "218", "274"], solutionIndex: 1, difficulty: 12),
     Question(
         chapter: const [Chapter.neuesTestament, Chapter.juengerUndApostel],
@@ -204,8 +217,8 @@ class Question {
         answers: const ["Weisheit", "Gottesfurcht", "Glaube", "Buße"],
         solutionIndex: 1,
         difficulty: 3,
-        solutionNoteURL: "https://www.bible.com/de/bible/73/pro.1.7",
-        solutionNoteHuman: "Sprüche 1, 7",
+        solutionNoteURL: ["https://www.bible.com/de/bible/73/pro.1.7"],
+        solutionNoteHuman: ["Sprüche 1, 7"],
         tip: "Sprüche 1, 7"),
     Question(
         chapter: const [Chapter.juengerUndApostel, Chapter.neuesTestament],
@@ -239,7 +252,17 @@ class Question {
     Question(
         chapter: const [Chapter.altesTestament], question: "Wie beurteilte Gott sein Werk?", answers: const ["Er fand es unvollständig.", "Er fand es schlecht.", "Er fand es gut.", "Er fand es langweilig"], solutionIndex: 2, difficulty: 1),
     Question(chapter: const [Chapter.altesTestament], question: "Wann wurden die Pflanzen erschaffen?", answers: const ["am 2. Tag", "am 3. Tag", "am 4. Tag", "am 5. Tag"], solutionIndex: 3, difficulty: 4),
-    Question(chapter: const [Chapter.altesTestament], question: "Wer wird in der Schöpfungsgeschichte nicht genannt?", answers: const ["die Vögel", "die Fische", "die Menschen", "die Affen"], solutionIndex: 3, difficulty: 1)
+    Question(chapter: const [Chapter.altesTestament], question: "Wer wird in der Schöpfungsgeschichte nicht genannt?", answers: const ["die Vögel", "die Fische", "die Menschen", "die Affen"], solutionIndex: 3, difficulty: 1),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "Warum durfte Mose das verheißene Land nicht betreten?",
+        answers: const ["Er murrte gegen Gott", "Er war bereits zu alt, sodass er das Land nicht erreichen konnte", "Er schlug einen Fels", "Er betete mit den Israeliten Götzen an"],
+        solutionIndex: 2,
+        difficulty: 4,
+        solutionNoteHuman: [
+          "Mose erhielt in 2. Mose 17 von Gott den Auftrag auf einen Stein zu schlagen, welcher sich teilte und Wasser zum Überleben fließen ließ, sodass Gottes Volk leben konnte. Dies ist ein Abbild auf Christus, welcher ebenfalls geschlagen und gebrochen werden musste, damit ewiges Leben für Gottes Kindern fließen konnte. Jesus musste nur ein für alle Mal gebrochen werden, somit durfte das vorausgehende Abbild auch nur einmal geschlagen und gebrochen werden. Stattdessen missachtete Mose Gottes Anweisung in 4. Mose 20 als die Israeliten wieder dürsteten, und schlug den Stein zweimal mit dem Stab, statt wie aufgetragen zu dem Stein zu reden."
+        ],
+        solutionNoteURL: ["https://www.bibelstudium.de/articles/121/mose-schlaegt-den-felsen.html"])
   ];
 }
 
