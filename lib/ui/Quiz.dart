@@ -74,7 +74,8 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
         title: Text("Frage ${_currentQuestion + 1} von ${questions.length}"),
       ),
       body: Container(
-        color: themeData.colorScheme.background,
+        color: questions[_currentQuestion].imagePath == null ? themeData.colorScheme.background : null,
+        decoration: questions[_currentQuestion].imagePath != null ? BoxDecoration(image: DecorationImage(image: AssetImage("lib/assets/questionImages/" + questions[_currentQuestion].imagePath!), fit: BoxFit.cover)) : null,
         padding: EdgeInsets.only(top: 16, left: rootContainerPadding.left, right: rootContainerPadding.right),
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -100,6 +101,7 @@ class _State extends State<Quiz> with TickerProviderStateMixin {
     );
   }
 
+  //TODO, wenn es eine Auflösung bzw. solutionNoteHuman oder solutionNoteURL gibt, dann muss diese Lösung ersteinmal angezeigt werden
   void _goToNextQuestion() {
     scaffoldMessenger.removeCurrentSnackBar();
     setState(() {
