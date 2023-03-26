@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../helper/Constants.dart';
+
 class Result extends StatelessWidget {
   final int correctAnswered;
   final int totalQuestions;
@@ -78,7 +80,7 @@ class Result extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 child: Container(
                   padding: EdgeInsets.only(right: 16),
-                  color: Colors.blue,
+                  color: Constants.cardColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

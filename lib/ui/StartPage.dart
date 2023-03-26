@@ -1,19 +1,18 @@
-import 'package:bible_quiz/main.dart';
 import 'package:bible_quiz/ui/BiblionaireMode.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/QuizFilter.dart';
 import 'package:flutter/material.dart';
 
-class StartPage extends StatefulWidget{
+import '../helper/Constants.dart';
 
+class StartPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _State();
   }
-
 }
 
-class _State extends State<StartPage>{
+class _State extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
@@ -23,35 +22,78 @@ class _State extends State<StartPage>{
           title: Text("Bibelquiz"),
         ),
         body: Container(
-          padding: rootContainerPadding,
-          color: themeData.colorScheme.background,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width,
+          padding: Constants.rootContainerPadding,
+          //color: themeData.colorScheme.background,
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("lib/assets/questionmarks.jpg"), fit: BoxFit.fitHeight)),
+          child: Stack(
             children: [
-              CustomCard(
-                tapAble: true,
-                callback: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => QuizFilter()),
-                  );
-                },
-                text: "Quiz starten",
-                height: 80,
-                backgroundColor: Colors.blue,
-              ),
-              CustomCard(
-                tapAble: true,
-                callback: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BiblionaireMode()),
-                  );
-                },
-                text: "Wer wird Biblionär",
-                height: 80,
-                backgroundColor: Colors.blue,
-              ),
+              /*SvgPicture.asset(
+                "lib/assets/papyrus3.svg",
+                fit: BoxFit.fitHeight,
+              ),*/
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomCard.withContent(
+                    widthPercentage: 0.4,
+                    tapAble: true,
+                    callback: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => QuizFilter()),
+                      );
+                    },
+                    //text: "Quiz starten",
+                    content: Row(
+                      children: [
+                        /*Container(
+                          child: SvgPicture.asset("lib/assets/quiz.svg", semanticsLabel: 'Quiz Logo'),
+                          width: 150,
+                        ),*/
+                        Expanded(
+                            child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Quiz starten",
+                            style: TextStyle(color: themeData.textTheme.displayLarge?.color, fontSize: 16),
+                          ),
+                        ))
+                      ],
+                    ),
+                    height: 80,
+                    backgroundColor: Constants.uiSelectableColor /*.withOpacity(0.3)*/,
+                  ),
+                  CustomCard.withContent(
+                    widthPercentage: 0.4,
+                    tapAble: true,
+                    callback: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BiblionaireMode()),
+                      );
+                    },
+                    content: Row(children: [
+                      Expanded(
+                          child: Container(
+                        alignment: Alignment.center,
+                        //padding: EdgeInsets.all(16),
+                        child: Text(
+                          "Wer wird Biblionär?",
+                          style: TextStyle(color: themeData.textTheme.displayLarge?.color, fontSize: 16),
+                        ),
+                      )),
+                      /*Container(
+                        child: SvgPicture.asset("lib/assets/playing-card.svg", semanticsLabel: 'Quiz Logo'),
+                        width: 150,
+                      ),*/
+                    ]),
+                    height: 80,
+                    backgroundColor: Constants.uiSelectableColor /*.withOpacity(0.3)*/,
+                  ),
+                ],
+              )
             ],
           ),
         ));

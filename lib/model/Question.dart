@@ -21,11 +21,11 @@ class Question {
 
   const Question({this.imagePath, required this.chapter, required this.question, required this.answers, required this.solutionIndex, required this.difficulty, this.solutionNoteHuman, this.solutionNoteURL, this.tip});
 
-  static List<Question> getRandomQuestions({required int numberOfQuestions, Chapter? chapter, bool biblionaireMode = false}) {
+  static List<Question> getRandomQuestions({required int numberOfQuestions, required Chapter chapter, bool biblionaireMode = false}) {
     List<Question> questions = [];
     if (!biblionaireMode) {
       Question._allQuestions.forEach((question) {
-        if ((numberOfQuestions != null ? questions.length < numberOfQuestions : true) && (chapter != null ? question.chapter.contains(chapter) : true)) {
+        if (questions.length < numberOfQuestions && (chapter == Chapter.alles ? true : question.chapter.contains(chapter))) {
           questions.add(question);
         }
       });
@@ -49,6 +49,8 @@ class Question {
   }
 
   static List<Question> _shuffle(List<Question> list) {
+    /*list.shuffle(Random(null));
+    return list;*/
     var random = new Random();
 
     // Go through all elements.
@@ -64,7 +66,28 @@ class Question {
     return list;
   }
 
-  static const Map<Chapter, String> chapterMap = {Chapter.neuesTestament: "Neues Testament", Chapter.altesTestament: "Altes Testament", Chapter.juengerUndApostel: "Jünger und Apostel"};
+  static int getCountOfQuestions(Chapter chapter) {
+    int count = 0;
+    if (chapter == Chapter.alles) {
+      return Question._allQuestions.length;
+    }
+    Question._allQuestions.forEach((question) {
+      if (question.chapter.contains(chapter)) {
+        count++;
+      }
+    });
+    return count;
+  }
+
+  static const Map<Chapter, String> chapterMap = {
+    Chapter.alles: "Die gesamte Bibel",
+    Chapter.neuesTestament: "Neues Testament",
+    Chapter.altesTestament: "Altes Testament",
+    Chapter.juengerUndApostel: "Jünger und Apostel",
+    Chapter.Josua: "Josua",
+    Chapter.Mose: "Mose",
+    Chapter.Jesus: "Jesus"
+  };
 
   static const List<Question> _allQuestions = [
     Question(
@@ -227,7 +250,7 @@ class Question {
         solutionIndex: 0,
         difficulty: 1),
     Question(
-        chapter: const [Chapter.juengerUndApostel, Chapter.altesTestament],
+        chapter: const [Chapter.altesTestament, Chapter.Mose],
         question: "Wieso waren Josefs Brüder neidisch auf ihn?",
         answers: const ["Ihr Vater schenkte ihm einen Esel.", "Josef erhielt eine reiche Erbschaft.", "Josef hatte die schönste Frau.", "Ihr Vater liebte Josef mehr als sie."],
         solutionIndex: 3,
@@ -262,12 +285,45 @@ class Question {
         solutionNoteHuman: [
           "Mose erhielt in 2. Mose 17 von Gott den Auftrag auf einen Stein zu schlagen, welcher sich teilte und Wasser zum Überleben fließen ließ, sodass Gottes Volk leben konnte. Dies ist ein Abbild auf Christus, welcher ebenfalls geschlagen und gebrochen werden musste, damit ewiges Leben für Gottes Kindern fließen konnte. Jesus musste nur ein für alle Mal gebrochen werden, somit durfte das vorausgehende Abbild auch nur einmal geschlagen und gebrochen werden. Stattdessen missachtete Mose Gottes Anweisung in 4. Mose 20 als die Israeliten wieder dürsteten, und schlug den Stein zweimal mit dem Stab, statt wie aufgetragen zu dem Stein zu reden."
         ],
-        solutionNoteURL: ["https://www.bibelstudium.de/articles/121/mose-schlaegt-den-felsen.html"])
+        solutionNoteURL: ["https://www.bibelstudium.de/articles/121/mose-schlaegt-den-felsen.html"]),
+    Question(
+        chapter: const [Chapter.altesTestament, Chapter.Josua],
+        question: "Was hängte Rahab als Erkennungszeichen in ihr Fenster?",
+        answers: const ["Tuch", "Laken", "Seil", "Korb"],
+        solutionIndex: 2,
+        difficulty: 7,
+        solutionNoteHuman: [
+          "Josua 2,18",
+          "In manchen Übersetzungen wird das Seil auch als Schnur übersetzt",
+        ],
+        imagePath: "rahabsHouse.png"),
+    Question(
+        chapter: const [Chapter.altesTestament, Chapter.Mose],
+        question: "Abrahams Frau Sara ist auch seine ...",
+        answers: const ["Schwester", "Halbschwester", "Cousine", "Nichte"],
+        solutionIndex: 1,
+        difficulty: 2,
+        solutionNoteHuman: ["1. Mose 20,12"]),
+    Question(
+        chapter: const [Chapter.neuesTestament, Chapter.Jesus],
+        imagePath: "barabbasInPrison.png",
+        question: "Wie ist der Name des Mannes, welcher an Stelle von Jesus freigelassen wurde?",
+        answers: ["Barabbas", "Stephanus", "Judas", "Barnabas"],
+        solutionIndex: 0,
+        difficulty: 3,
+        solutionNoteHuman: ["Mt 27,20"]),
+    Question(
+        chapter: const [Chapter.neuesTestament, Chapter.Jesus],
+        question: "Was riefen die Menschen Jesus bei seinem Einzug in Jerusalem zu?",
+        answers: const [
+          "Hosianna dem Sohn Davids! Gepriesen sei der, welcher kommt auf einem Fohlen im Namen des Herrn! Hosianna in der Höhe!",
+          "Hosianna dem Höchsten! Gepriesen sei der, welcher kommt im Namen des Herrn! Hosianna im Himmel und der Erde!",
+          "Hosianna dem Sohn Davids! Gepriesen sei der, welcher kommt im Namen des Herrn! Hosianna im Himmel und der Erde!",
+          "Hosianna dem Sohn Davids! Gepriesen sei der, welcher kommt im Namen des Herrn! Hosianna in der Höhe!"
+        ],
+        solutionIndex: 3,
+        difficulty: 8)
   ];
 }
 
-enum Chapter {
-  neuesTestament,
-  altesTestament,
-  juengerUndApostel,
-}
+enum Chapter { alles, neuesTestament, altesTestament, juengerUndApostel, Josua, Mose, Jesus }

@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../helper/Constants.dart';
+
 class BiblionaireResult extends StatelessWidget {
   final int correctAnswered;
   final bool failed;
@@ -48,12 +50,12 @@ class BiblionaireResult extends StatelessWidget {
                                   "lib/assets/bible2.svg",
                                   width: widthHeightOfPictures / 2,
                                   height: widthHeightOfPictures / 2,
-                                  color: Colors.blue,
+                                  color: Constants.cardColor,
                                 ),
                                 Icon(
                                   Icons.attach_money,
                                   size: widthHeightOfPictures / 2,
-                                  color: Colors.blue,
+                                  color: Constants.cardColor,
                                 ),
                               ],
                             )
@@ -78,7 +80,7 @@ class BiblionaireResult extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: Container(
                     padding: EdgeInsets.only(right: 16),
-                    color: Colors.blue,
+                    color: Constants.cardColor,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

@@ -1,4 +1,4 @@
-import 'package:bible_quiz/main.dart';
+import 'package:bible_quiz/helper/Constants.dart';
 import 'package:bible_quiz/model/ContentType.dart';
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/BiblionaireResult.dart';
@@ -43,7 +43,7 @@ class _State extends QuizStateFramework<BiblionaireMode> {
   @override
   void initState() {
     if (questions.isEmpty) {
-      questions = Question.getRandomQuestions(numberOfQuestions: 15, biblionaireMode: true);
+      questions = Question.getRandomQuestions(numberOfQuestions: 15, biblionaireMode: true, chapter: Chapter.alles);
     }
     initColors();
     numberOfCards = 1 + questions[currentQuestion].answers.length;
@@ -59,9 +59,10 @@ class _State extends QuizStateFramework<BiblionaireMode> {
         title: Text("${BiblionaireQuestions[currentQuestion]} Frage"),
       ),
       body: Container(
-        color: questions[currentQuestion].imagePath == null ? themeData.colorScheme.background : null,
-        decoration: questions[currentQuestion].imagePath != null ? BoxDecoration(image: DecorationImage(image: AssetImage("lib/assets/questionImages/" + questions[currentQuestion].imagePath!), fit: BoxFit.cover)) : null,
-        padding: EdgeInsets.only(top: 16, left: rootContainerPadding.left, right: rootContainerPadding.right),
+        //color: questions[currentQuestion].imagePath == null ? themeData.colorScheme.background : null,
+        decoration:
+            BoxDecoration(image: DecorationImage(image: AssetImage(questions[currentQuestion].imagePath != null ? "lib/assets/questionImages/" + questions[currentQuestion].imagePath! : "lib/assets/questionmarks.jpg"), fit: BoxFit.cover)),
+        padding: EdgeInsets.only(top: 16, left: Constants.rootContainerPadding.left, right: Constants.rootContainerPadding.right),
         width: MediaQuery.of(context).size.width,
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.center,
@@ -103,6 +104,7 @@ class _State extends QuizStateFramework<BiblionaireMode> {
     Question question = questions[currentQuestion];
     setState(() {
       scaffoldMessenger.showSnackBar(SnackBar(
+        backgroundColor: Constants.cardHeadlineColor,
         content: SnackBarProgressIndicator(
           duration: autoSkipSeconds,
           onComplete: goToNextQuestion,

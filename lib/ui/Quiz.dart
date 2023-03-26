@@ -1,4 +1,4 @@
-import 'package:bible_quiz/main.dart';
+import 'package:bible_quiz/helper/Constants.dart';
 import 'package:bible_quiz/model/ContentType.dart';
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/QuizStateFramework.dart';
@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 
 class Quiz extends StatefulWidget {
   final int numberOfQuestions;
-  final Chapter? chapter;
+  final Chapter chapter;
 
-  Quiz({Key? key, required this.numberOfQuestions, this.chapter}) : super(key: key);
+  Quiz({Key? key, required this.numberOfQuestions, required this.chapter}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,13 +23,13 @@ class _State extends QuizStateFramework<Quiz> {
   for logic
    */
   final int numberOfQuestions;
-  final Chapter? chapter;
+  final Chapter chapter;
   int _correctAnswered = 0;
 
   //at the moment not used
   int? _chosen;
 
-  _State({required this.numberOfQuestions, this.chapter});
+  _State({required this.numberOfQuestions, required this.chapter});
 
   @override
   void initState() {
@@ -50,9 +50,10 @@ class _State extends QuizStateFramework<Quiz> {
         title: Text("Frage ${currentQuestion + 1} von ${questions.length}"),
       ),
       body: Container(
-        color: questions[currentQuestion].imagePath == null ? themeData.colorScheme.background : null,
-        decoration: questions[currentQuestion].imagePath != null ? BoxDecoration(image: DecorationImage(image: AssetImage("lib/assets/questionImages/" + questions[currentQuestion].imagePath!), fit: BoxFit.cover)) : null,
-        padding: EdgeInsets.only(top: 16, left: rootContainerPadding.left, right: rootContainerPadding.right),
+        //color: questions[currentQuestion].imagePath == null ? themeData.colorScheme.background : null,
+        decoration:
+            BoxDecoration(image: DecorationImage(image: AssetImage(questions[currentQuestion].imagePath != null ? "lib/assets/questionImages/" + questions[currentQuestion].imagePath! : "lib/assets/questionmarks.jpg"), fit: BoxFit.cover)),
+        padding: EdgeInsets.only(top: 16, left: Constants.rootContainerPadding.left, right: Constants.rootContainerPadding.right),
         width: MediaQuery.of(context).size.width,
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,6 +73,7 @@ class _State extends QuizStateFramework<Quiz> {
     Question question = questions[currentQuestion];
     setState(() {
       scaffoldMessenger.showSnackBar(SnackBar(
+        backgroundColor: Constants.cardHeadlineColor,
         content: SnackBarProgressIndicator(
           duration: autoSkipSeconds,
           onComplete: () => continueWithQuiz(question),

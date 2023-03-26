@@ -1,3 +1,4 @@
+import 'package:bible_quiz/helper/Constants.dart';
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class SolutionContainer extends StatelessWidget {
       children: [
         CustomCard(
           callback: null,
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Constants.cardHeadlineColor,
           tapAble: false,
           text: "Lösungserklärung",
           height: heightOfCard,
@@ -33,7 +34,7 @@ class SolutionContainer extends StatelessWidget {
       list.add(Padding(padding: EdgeInsets.only(top: paddingBetweenQuestionAndAnswer)));
       list.add(CustomCard(
         callback: null,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Constants.cardColor,
         tapAble: false,
         text: text,
         height: null,
@@ -48,7 +49,7 @@ class SolutionContainer extends StatelessWidget {
       list.add(Padding(padding: EdgeInsets.only(top: paddingBetweenQuestionAndAnswer)));
       list.add(CustomCard.withContent(
         callback: null,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Constants.cardColor,
         tapAble: false,
         content: InkWell(
           onTap: () async {

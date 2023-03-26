@@ -1,3 +1,4 @@
+import 'package:bible_quiz/helper/Constants.dart';
 import 'package:bible_quiz/model/ContentType.dart';
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
@@ -39,7 +40,7 @@ abstract class QuizStateFramework<T extends StatefulWidget> extends State<T> wit
   @protected
   Color solutionColor = Colors.lightGreen;
   @protected
-  final Duration autoSkipSeconds = Duration(seconds: 10);
+  final Duration autoSkipSeconds = Duration(seconds: 15);
 
   void goToNextQuestion();
 
@@ -59,7 +60,8 @@ abstract class QuizStateFramework<T extends StatefulWidget> extends State<T> wit
   Widget getQuestion() {
     return CustomCard(
       callback: null,
-      backgroundColor: Theme.of(context).primaryColor,
+      //backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Constants.cardHeadlineColor,
       tapAble: false,
       text: questions[currentQuestion].question,
       height: _heightOfCard,

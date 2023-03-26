@@ -1,8 +1,10 @@
-import 'package:bible_quiz/main.dart';
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/Quiz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import '../helper/Constants.dart';
 
 class QuizFilter extends StatefulWidget {
   @override
@@ -10,9 +12,8 @@ class QuizFilter extends StatefulWidget {
 }
 
 class _State extends State<QuizFilter> {
-  Chapter? selectedChapter;
-  int numberOfQuestions = 24;
-  static const int int64MaxValue = 9223372036854775807;
+  Chapter selectedChapter = Chapter.alles;
+  int numberOfQuestions = 8;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +24,10 @@ class _State extends State<QuizFilter> {
           title: Text("Fragen filtern"),
         ),
         body: Container(
-          padding: rootContainerPadding,
+          padding: Constants.rootContainerPadding,
           width: MediaQuery.of(context).size.width,
-          color: themeData.colorScheme.background,
+          //color: themeData.colorScheme.background,
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("lib/assets/questionmarks.jpg"), fit: BoxFit.fitHeight)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -34,32 +36,48 @@ class _State extends State<QuizFilter> {
                   Container(
                     alignment: Alignment.centerRight,
                     padding: EdgeInsets.only(right: 16),
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: Text(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    /*child: Text(
                       "Themenbereich",
                       style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
+                    ),*/
+                    child: CustomCard(
+                      height: 50,
+                      tapAble: false,
+                      text: "Themenbereich",
+                      backgroundColor: Constants.uiSelectableColor,
                     ),
                   ),
                   Expanded(
                       child: Container(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.blue, border: Border.all()),
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Constants.uiSelectableColor, border: Border.all()),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<Chapter>(
-                        dropdownColor: themeData.colorScheme.background,
+                        dropdownColor: Constants.uiSelectableColor,
                         value: selectedChapter,
-                        items: Chapter.values.map((Chapter value) {
+                        items: Chapter.values.where((Chapter value) {
+                          int count = Question.getCountOfQuestions(value);
+                          return count >= 16 || kDebugMode;
+                        }).map((Chapter value) {
+                          int count = Question.getCountOfQuestions(value);
                           return new DropdownMenuItem<Chapter>(
                             value: value,
                             child: new Text(
-                              Question.chapterMap[value] ?? "",
-                              style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
+                              (Question.chapterMap[value] ?? "") + " ($count)",
+                              style: TextStyle(color: themeData.textTheme.displayLarge?.color),
                             ),
                           );
                         }).toList(),
                         onChanged: (value) {
                           setState(() {
                             selectedChapter = value!;
+                            int count = Question.getCountOfQuestions(value);
+                            if (count < 8) {
+                              numberOfQuestions = Constants.int64MaxValue;
+                            } else {
+                              numberOfQuestions = 8;
+                            }
                           });
                         },
                       ),
@@ -73,33 +91,44 @@ class _State extends State<QuizFilter> {
                   Container(
                     alignment: Alignment.centerRight,
                     padding: EdgeInsets.only(right: 16),
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: Text(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    /*child: Text(
                       "Anzahl der Fragen",
                       style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
+                    ),*/
+                    child: CustomCard(
+                      height: 50,
+                      tapAble: false,
+                      text: "Anzahl der Fragen",
+                      backgroundColor: Constants.uiSelectableColor,
                     ),
                   ),
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.blue, border: Border.all()),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Constants.uiSelectableColor, border: Border.all()),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
-                          dropdownColor: themeData.colorScheme.background,
-                          value: numberOfQuestions == int64MaxValue ? 'Alle' : numberOfQuestions.toString(),
-                          items: <String>['16', '24', '32', '48', '64', 'Alle'].map((String value) {
+                          dropdownColor: Constants.uiSelectableColor,
+                          value: numberOfQuestions == Constants.int64MaxValue ? 'Alle' : numberOfQuestions.toString(),
+                          items: <String>['8', '16', '24', '32', '48', 'Alle'].where((element) {
+                            if (element == 'Alle') {
+                              return kDebugMode;
+                            }
+                            return int.parse(element) <= Question.getCountOfQuestions(selectedChapter);
+                          }).map((String value) {
                             return new DropdownMenuItem<String>(
                               value: value,
                               child: new Text(
                                 value,
-                                style: TextStyle(color: themeData.textTheme.bodyLarge?.color),
+                                style: TextStyle(color: themeData.textTheme.displayLarge?.color),
                               ),
                             );
                           }).toList(),
                           onChanged: (value) {
                             setState(() {
                               if (value == "Alle") {
-                                numberOfQuestions = int64MaxValue;
+                                numberOfQuestions = Constants.int64MaxValue;
                               } else {
                                 numberOfQuestions = int.tryParse(value!)!;
                               }
@@ -126,7 +155,7 @@ class _State extends State<QuizFilter> {
                 },
                 text: "Quiz starten",
                 height: 80,
-                backgroundColor: Colors.blue,
+                backgroundColor: Constants.uiSelectableColor,
               ),
             ],
           ),

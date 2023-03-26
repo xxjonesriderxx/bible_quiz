@@ -22,5 +22,7 @@ doc/api/
 *.js.map
 
 *.jks
+key.jks
+*.properties
 *.flutter-plugins-dependencies
 *.flutter-plugins
