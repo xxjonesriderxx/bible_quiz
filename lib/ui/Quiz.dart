@@ -1,4 +1,5 @@
 import 'package:bible_quiz/helper/Constants.dart';
+import 'package:bible_quiz/helper/TimerScoreCalculator.dart';
 import 'package:bible_quiz/model/ContentType.dart';
 import 'package:bible_quiz/model/Question.dart';
 import 'package:bible_quiz/ui/QuizStateFramework.dart';
@@ -42,35 +43,44 @@ class _State extends QuizStateFramework<Quiz> {
 
   @override
   Widget build(BuildContext context) {
-    var themeData = Theme.of(context);
+    TimerScoreCalculator.instance.startCounting();
     scaffoldMessenger = ScaffoldMessenger.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Frage ${currentQuestion + 1} von ${questions.length}"),
-      ),
-      body: Container(
-        //color: questions[currentQuestion].imagePath == null ? themeData.colorScheme.background : null,
-        decoration:
-            BoxDecoration(image: DecorationImage(image: AssetImage(questions[currentQuestion].imagePath != null ? "lib/assets/questionImages/" + questions[currentQuestion].imagePath! : "lib/assets/questionmarks.jpg"), fit: BoxFit.cover)),
-        padding: EdgeInsets.only(top: 16, left: Constants.rootContainerPadding.left, right: Constants.rootContainerPadding.right),
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.center,
-          children: getMainContent(currentType),
+    return WillPopScope(
+      onWillPop: () async {
+        scaffoldMessenger.hideCurrentSnackBar();
+        TimerScoreCalculator.instance.submitScore();
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("Frage ${currentQuestion + 1} von ${questions.length}"),
         ),
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(questions[currentQuestion].imagePath != null ? "lib/assets/questionImages/" + questions[currentQuestion].imagePath! : "lib/assets/questionmarks.jpg"),
+                  fit: BoxFit.cover)),
+          padding: EdgeInsets.only(top: 16, left: Constants.rootContainerPadding.left, right: Constants.rootContainerPadding.right),
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: getMainContent(currentType),
+          ),
+        ),
+        floatingActionButton: answered
+            ? FloatingActionButton(
+                child: Icon(Icons.arrow_forward_ios),
+                onPressed: () => continueWithQuiz(questions[currentQuestion]),
+              )
+            : Container(),
       ),
-      floatingActionButton: answered
-          ? FloatingActionButton(
-              child: Icon(Icons.arrow_forward_ios),
-              onPressed: () => continueWithQuiz(questions[currentQuestion]),
-            )
-          : Container(),
     );
   }
 
   void onAnswerSelected(int index) {
     Question question = questions[currentQuestion];
+    bool rightAnswerSelected = question.solutionIndex == index;
+    TimerScoreCalculator.instance.stopCounting(rightAnswerSelected);
     setState(() {
       scaffoldMessenger.showSnackBar(SnackBar(
         backgroundColor: Constants.cardHeadlineColor,
@@ -81,7 +91,7 @@ class _State extends QuizStateFramework<Quiz> {
         duration: autoSkipSeconds,
       ));
       if (!answered) {
-        if (question.solutionIndex == index) {
+        if (rightAnswerSelected) {
           colorsOfButtons[index] = correctColor;
           _correctAnswered++;
         } else {
@@ -98,6 +108,7 @@ class _State extends QuizStateFramework<Quiz> {
     scaffoldMessenger.removeCurrentSnackBar();
     setState(() {
       if (currentQuestion < questions.length - 1) {
+        TimerScoreCalculator.instance.startCounting();
         currentQuestion++;
         initState();
         setState(() {
@@ -111,12 +122,11 @@ class _State extends QuizStateFramework<Quiz> {
           context,
           MaterialPageRoute(
               builder: (context) => Result(
-                correctAnswered: _correctAnswered,
-                totalQuestions: questions.length,
-              )),
+                    correctAnswered: _correctAnswered,
+                    totalQuestions: questions.length,
+                  )),
         );
       }
     });
   }
-
 }

@@ -26,4 +26,4 @@ key.jks
 *.properties
 *.flutter-plugins-dependencies
 *.flutter-plugins
-android/app/src/main/res/values/games-ids.xml
+games-ids.xml

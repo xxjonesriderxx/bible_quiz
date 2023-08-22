@@ -53,28 +53,36 @@ class _State extends QuizStateFramework<BiblionaireMode> {
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
     scaffoldMessenger = ScaffoldMessenger.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("${BiblionaireQuestions[currentQuestion]} Frage"),
-      ),
-      body: Container(
-        //color: questions[currentQuestion].imagePath == null ? themeData.colorScheme.background : null,
-        decoration:
-            BoxDecoration(image: DecorationImage(image: AssetImage(questions[currentQuestion].imagePath != null ? "lib/assets/questionImages/" + questions[currentQuestion].imagePath! : "lib/assets/questionmarks.jpg"), fit: BoxFit.cover)),
-        padding: EdgeInsets.only(top: 16, left: Constants.rootContainerPadding.left, right: Constants.rootContainerPadding.right),
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.center,
-          children: getMainContent(currentType),
+    return WillPopScope(
+      onWillPop: () async {
+        scaffoldMessenger.hideCurrentSnackBar();
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("${BiblionaireQuestions[currentQuestion]} Frage"),
         ),
+        body: Container(
+          //color: questions[currentQuestion].imagePath == null ? themeData.colorScheme.background : null,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(questions[currentQuestion].imagePath != null ? "lib/assets/questionImages/" + questions[currentQuestion].imagePath! : "lib/assets/questionmarks.jpg"),
+                  fit: BoxFit.cover)),
+          padding: EdgeInsets.only(top: 16, left: Constants.rootContainerPadding.left, right: Constants.rootContainerPadding.right),
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            //crossAxisAlignment: CrossAxisAlignment.center,
+            children: getMainContent(currentType),
+          ),
+        ),
+        floatingActionButton: answered
+            ? FloatingActionButton(
+                child: Icon(Icons.arrow_forward_ios),
+                onPressed: () => continueWithQuiz(questions[currentQuestion]),
+              )
+            : Container(),
       ),
-      floatingActionButton: answered
-          ? FloatingActionButton(
-              child: Icon(Icons.arrow_forward_ios),
-              onPressed: () => continueWithQuiz(questions[currentQuestion]),
-            )
-          : Container(),
     );
   }
 

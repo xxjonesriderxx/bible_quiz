@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:games_services/games_services.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../helper/Constants.dart';
@@ -18,6 +18,7 @@ class BiblionaireResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _unlockAchievement(partialUnlock: false);
     var themeData = Theme.of(context);
     double widthHeightOfPictures = MediaQuery.of(context).size.width / 2;
     String text = "";
@@ -43,21 +44,10 @@ class BiblionaireResult extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       !failed
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  "lib/assets/bible2.svg",
-                                  width: widthHeightOfPictures / 2,
-                                  height: widthHeightOfPictures / 2,
-                                  color: Constants.cardColor,
-                                ),
-                                Icon(
-                                  Icons.attach_money,
-                                  size: widthHeightOfPictures / 2,
-                                  color: Constants.cardColor,
-                                ),
-                              ],
+                          ? Image.asset(
+                              "lib/assets/who-wants-to-be-a-biblionaire.png",
+                              width: widthHeightOfPictures,
+                              height: widthHeightOfPictures,
                             )
                           : Text(
                               "🥺",
@@ -84,12 +74,12 @@ class BiblionaireResult extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        IconButton(
+                        /*IconButton(
                             icon: Icon(
                               Icons.share,
                               color: Colors.white,
                             ),
-                            onPressed: _share)
+                            onPressed: _share)*/
                       ],
                     ),
                   ),
@@ -98,6 +88,14 @@ class BiblionaireResult extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  void _unlockAchievement({required bool partialUnlock}) async {
+    if (partialUnlock) {
+      await Achievements.unlock(achievement: Achievement(androidID: 'CgkI74ydo6IBEAIQAg', percentComplete: correctAnswered / 15));
+    } else if (!failed) {
+      await Achievements.unlock(achievement: Achievement(androidID: 'CgkI74ydo6IBEAIQAg', percentComplete: 100));
+    }
   }
 
   _share() async {

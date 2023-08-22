@@ -38,7 +38,7 @@ class Question {
           questions.add(question);
         }
       });
-      return _shuffle(questions);
+      return List.of(questions..shuffle()).map((e) => _shuffleAnswerOptions(e)).toList();
     } else {
       var random = new Random();
       for (int difficulty = 1; difficulty <= 15; difficulty++) {
@@ -51,28 +51,24 @@ class Question {
         });
         //now adding random question with this difficulty to our result list
         var randomIndex = random.nextInt(tempForDifficultySearch.length);
-        questions.add(tempForDifficultySearch[randomIndex]);
+        questions.add(_shuffleAnswerOptions(tempForDifficultySearch[randomIndex]));
       }
       return questions;
     }
   }
 
-  static List<Question> _shuffle(List<Question> list) {
-    /*list.shuffle(Random(null));
-    return list;*/
-    var random = new Random();
+  static Question _shuffleAnswerOptions(Question question) {
+    List<String> randomizedAnswers = List.of(question.answers)..shuffle();
+    int newSolutionIndex = randomizedAnswers.indexOf(question.answers[question.solutionIndex]);
 
-    // Go through all elements.
-    for (var i = list.length - 1; i > 0; i--) {
-      // Pick a pseudorandom number according to the list length
-      var n = random.nextInt(i + 1);
-
-      var temp = list[i];
-      list[i] = list[n];
-      list[n] = temp;
-    }
-
-    return list;
+    return Question(
+      chapter: question.chapter,
+      question: question.question,
+      answers: randomizedAnswers,
+      solutionIndex: newSolutionIndex,
+      difficulty: question.difficulty,
+      imagePath: question.imagePath,
+    );
   }
 
   static int getCountOfQuestions(Chapter chapter) {

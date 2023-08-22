@@ -111,7 +111,7 @@ class _State extends State<QuizFilter> {
                         child: DropdownButton<String>(
                           dropdownColor: Constants.uiSelectableColor,
                           value: numberOfQuestions == Constants.int64MaxValue ? 'Alle' : numberOfQuestions.toString(),
-                          items: <String>['8', '16', '24', '32', '48', 'Alle'].where((element) {
+                          items: <String>['8', '16', '24', '32', '40', 'Alle'].where((element) {
                             if (element == 'Alle') {
                               return kDebugMode;
                             }
