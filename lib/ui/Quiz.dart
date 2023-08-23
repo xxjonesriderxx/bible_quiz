@@ -7,6 +7,8 @@ import 'package:bible_quiz/ui/Result.dart';
 import 'package:bible_quiz/ui/SnackBarProgressIndicator.dart';
 import 'package:flutter/material.dart';
 
+import '../helper/DeviceTypeHelper.dart';
+
 class Quiz extends StatefulWidget {
   final int numberOfQuestions;
   final Chapter chapter;
@@ -61,10 +63,10 @@ class _State extends QuizStateFramework<Quiz> {
               image: DecorationImage(
                   image: AssetImage(questions[currentQuestion].imagePath != null ? "lib/assets/questionImages/" + questions[currentQuestion].imagePath! : "lib/assets/questionmarks.jpg"),
                   fit: BoxFit.cover)),
-          padding: EdgeInsets.only(top: 16, left: Constants.rootContainerPadding.left, right: Constants.rootContainerPadding.right),
+          padding: EdgeInsets.only(top: 16, left: DeviceTypeHelper.getRootContainerPadding(context).left, right: DeviceTypeHelper.getRootContainerPadding(context).right),
           width: MediaQuery.of(context).size.width,
           child: Column(
-            children: getMainContent(currentType),
+            children: getMainContent(currentType, MediaQuery.of(context).orientation),
           ),
         ),
         floatingActionButton: answered

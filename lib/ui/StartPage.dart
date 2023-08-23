@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:games_services/games_services.dart';
 
 import '../helper/Constants.dart';
+import '../helper/DeviceTypeHelper.dart';
 
 class StartPage extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _State extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
+    Orientation currentOrientation = MediaQuery.of(context).orientation;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -31,9 +33,9 @@ class _State extends State<StartPage> {
         body: Container(
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width,
-          padding: Constants.rootContainerPadding,
+          padding: DeviceTypeHelper.getRootContainerPadding(context),
           //color: themeData.colorScheme.background,
-          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("lib/assets/questionmarks.jpg"), fit: BoxFit.fitHeight)),
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("lib/assets/questionmarks.jpg"), fit: currentOrientation == Orientation.landscape ? BoxFit.fitWidth : BoxFit.fitHeight)),
           child: Stack(
             children: [
               /*SvgPicture.asset(
@@ -156,7 +158,6 @@ class _State extends State<StartPage> {
   }
 
   void _showAchievements() async {
-    final result = await Achievements.showAchievements();
-    print(result);
+    await Achievements.showAchievements();
   }
 }

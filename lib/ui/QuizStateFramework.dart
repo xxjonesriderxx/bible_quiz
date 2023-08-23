@@ -26,9 +26,7 @@ abstract class QuizStateFramework<T extends StatefulWidget> extends State<T> wit
   @protected
   late ScaffoldMessengerState scaffoldMessenger;
   @protected
-  static const double _heightOfCard = 80;
-  @protected
-  static const double _paddingLeftRight = 32;
+  static const double _heightOfCard = 75;
   @protected
   static const double _paddingBetweenQuestionAndAnswer = 8;
   @protected
@@ -68,16 +66,58 @@ abstract class QuizStateFramework<T extends StatefulWidget> extends State<T> wit
     );
   }
 
-  Widget getAnswers() {
+  Widget getAnswers(Orientation orientation) {
     List<Widget> allAnswers = [];
-    for (int i = 0; i < questions[currentQuestion].answers.length; i++) {
-      allAnswers.add(CustomCard(
-        callback: () => onAnswerSelected(i),
-        backgroundColor: colorsOfButtons[i],
-        tapAble: true,
-        text: questions[currentQuestion].answers[i],
-        height: _heightOfCard,
-      ));
+    if (orientation == Orientation.portrait) {
+      for (int i = 0; i < questions[currentQuestion].answers.length; i++) {
+        allAnswers.add(CustomCard(
+          callback: () => onAnswerSelected(i),
+          backgroundColor: colorsOfButtons[i],
+          tapAble: true,
+          text: questions[currentQuestion].answers[i],
+          height: _heightOfCard,
+        ));
+      }
+    } else {
+      for (int i = 0; i < questions[currentQuestion].answers.length; i += 2) {
+        if (i + 1 < questions[currentQuestion].answers.length) {
+          // Add two answers side by side
+          allAnswers.add(Row(
+            children: [
+              Expanded(
+                child: CustomCard(
+                  callback: () => onAnswerSelected(i),
+                  backgroundColor: colorsOfButtons[i],
+                  tapAble: true,
+                  text: questions[currentQuestion].answers[i],
+                  height: _heightOfCard,
+                ),
+              ),
+              SizedBox(width: 16), // Adjust spacing between cards
+              Expanded(
+                child: CustomCard(
+                  callback: () => onAnswerSelected(i + 1),
+                  backgroundColor: colorsOfButtons[i + 1],
+                  tapAble: true,
+                  text: questions[currentQuestion].answers[i + 1],
+                  height: _heightOfCard,
+                ),
+              ),
+            ],
+          ));
+        } else {
+          // Add a centered answer for odd number of answers
+          allAnswers.add(Center(
+            child: CustomCard(
+              callback: () => onAnswerSelected(i),
+              backgroundColor: colorsOfButtons[i],
+              tapAble: true,
+              text: questions[currentQuestion].answers[i],
+              height: _heightOfCard,
+            ),
+          ));
+        }
+      }
     }
     return SingleChildScrollView(
       child: Column(
@@ -86,7 +126,7 @@ abstract class QuizStateFramework<T extends StatefulWidget> extends State<T> wit
     );
   }
 
-  List<Widget> getMainContent(ContentType type) {
+  List<Widget> getMainContent(ContentType type, Orientation orientation) {
     if (type == ContentType.Question) {
       return [
         getQuestion(),
@@ -94,7 +134,7 @@ abstract class QuizStateFramework<T extends StatefulWidget> extends State<T> wit
         Container(
           //padding: EdgeInsets.only(left: _paddingLeftRight, right: _paddingLeftRight),
           child: Expanded(
-            child: getAnswers(),
+            child: getAnswers(orientation),
           ),
         ),
       ];

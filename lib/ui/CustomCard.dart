@@ -15,7 +15,8 @@ class CustomCard extends StatelessWidget {
       : this.content = null,
         super(key: key);
 
-  CustomCard.withContent({Key? key, this.callback, this.backgroundColor, required this.tapAble, required this.content, required this.height, this.widthPercentage = 1.0, this.edgeInset = const EdgeInsets.all(12.0)})
+  CustomCard.withContent(
+      {Key? key, this.callback, this.backgroundColor, required this.tapAble, required this.content, required this.height, this.widthPercentage = 1.0, this.edgeInset = const EdgeInsets.all(12.0)})
       : this.text = null,
         super(key: key);
 
@@ -49,12 +50,12 @@ class CustomCard extends StatelessWidget {
                   : content,
             )
           : ElevatedButton(
-        //answer button
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black, backgroundColor: backgroundColor ?? themeData.cardColor, // foreground
-        ),
-        child: Container(
-          color: backgroundColor ?? themeData.cardColor,
+              //answer button
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black, backgroundColor: backgroundColor ?? themeData.cardColor, // foreground
+              ),
+              child: Container(
+                color: backgroundColor ?? themeData.cardColor,
                 alignment: Alignment.center,
                 height: height,
                 width: width,
@@ -63,11 +64,12 @@ class CustomCard extends StatelessWidget {
                     ? Text(
                         text!,
                         style: TextStyle(color: textColor),
+                        textAlign: TextAlign.center,
                       )
                     : content,
               ),
-        onPressed: callback,
-      ),
+              onPressed: callback,
+            ),
     );
   }
 }

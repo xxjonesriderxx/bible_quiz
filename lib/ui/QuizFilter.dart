@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../helper/Constants.dart';
+import '../helper/DeviceTypeHelper.dart';
 
 class QuizFilter extends StatefulWidget {
   @override
@@ -18,16 +19,17 @@ class _State extends State<QuizFilter> {
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
+    Orientation currentOrientation = MediaQuery.of(context).orientation;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text("Fragen filtern"),
         ),
         body: Container(
-          padding: Constants.rootContainerPadding,
+          padding: DeviceTypeHelper.getRootContainerPadding(context),
           width: MediaQuery.of(context).size.width,
           //color: themeData.colorScheme.background,
-          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("lib/assets/questionmarks.jpg"), fit: BoxFit.fitHeight)),
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("lib/assets/questionmarks.jpg"), fit: currentOrientation == Orientation.landscape ? BoxFit.fitWidth : BoxFit.fitHeight)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

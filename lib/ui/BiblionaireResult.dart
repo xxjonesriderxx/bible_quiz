@@ -20,7 +20,8 @@ class BiblionaireResult extends StatelessWidget {
   Widget build(BuildContext context) {
     _unlockAchievement(partialUnlock: false);
     var themeData = Theme.of(context);
-    double widthHeightOfPictures = MediaQuery.of(context).size.width / 2;
+    Orientation currentOrientation = MediaQuery.of(context).orientation;
+    double widthHeightTrophy = currentOrientation == Orientation.portrait ? MediaQuery.of(context).size.width / 2 : MediaQuery.of(context).size.height / 2;
     String text = "";
     if (failed) {
       text = "Deine letzte Antwort war leider falsch, du hast $correctAnswered von 15 Fragen richtig beantwortet. Bleib am Ball, du lernst die Bibel gerade kennen.";
@@ -45,9 +46,9 @@ class BiblionaireResult extends StatelessWidget {
                     children: [
                       !failed
                           ? Image.asset(
-                              "lib/assets/who-wants-to-be-a-biblionaire.png",
-                              width: widthHeightOfPictures,
-                              height: widthHeightOfPictures,
+                        "lib/assets/who-wants-to-be-a-biblionaire.png",
+                              width: widthHeightTrophy,
+                              height: widthHeightTrophy,
                             )
                           : Text(
                               "🥺",
@@ -87,6 +88,10 @@ class BiblionaireResult extends StatelessWidget {
               )
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.arrow_forward_ios),
+          onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
         ));
   }
 

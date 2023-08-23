@@ -73,6 +73,9 @@ android {
         debugSigining {
             signingConfig signingConfigs.debug
         }
+        production {
+            signingConfig signingConfigs.release
+        }
     }
 }
 

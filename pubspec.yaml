@@ -1,5 +1,6 @@
 name: bible_quiz
 description: A bible quiz.
+#release with flutter build appbundle --flavor production
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -27,6 +28,7 @@ dependencies:
   share_plus: ^7.1.0
   url_launcher: ^6.1.12
   games_services: ^3.0.1
+  flutter_device_type: ^0.4.0
 
 
   # The following adds the Cupertino Icons font to your application.
