@@ -66,9 +66,9 @@ abstract class QuizStateFramework<T extends StatefulWidget> extends State<T> wit
     );
   }
 
-  Widget getAnswers(Orientation orientation) {
+  Widget getAnswers(MediaQueryData mediaQueryData) {
     List<Widget> allAnswers = [];
-    if (orientation == Orientation.portrait) {
+    if (mediaQueryData.orientation == Orientation.portrait) {
       for (int i = 0; i < questions[currentQuestion].answers.length; i++) {
         allAnswers.add(CustomCard(
           callback: () => onAnswerSelected(i),
@@ -126,7 +126,7 @@ abstract class QuizStateFramework<T extends StatefulWidget> extends State<T> wit
     );
   }
 
-  List<Widget> getMainContent(ContentType type, Orientation orientation) {
+  List<Widget> getMainContent(ContentType type, MediaQueryData mediaQueryData) {
     if (type == ContentType.Question) {
       return [
         getQuestion(),
@@ -134,7 +134,7 @@ abstract class QuizStateFramework<T extends StatefulWidget> extends State<T> wit
         Container(
           //padding: EdgeInsets.only(left: _paddingLeftRight, right: _paddingLeftRight),
           child: Expanded(
-            child: getAnswers(orientation),
+            child: getAnswers(mediaQueryData),
           ),
         ),
       ];

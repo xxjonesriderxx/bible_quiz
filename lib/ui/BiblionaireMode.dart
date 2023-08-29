@@ -75,7 +75,7 @@ class _State extends QuizStateFramework<BiblionaireMode> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             //crossAxisAlignment: CrossAxisAlignment.center,
-            children: getMainContent(currentType, MediaQuery.of(context).orientation),
+            children: getMainContent(currentType, MediaQuery.of(context)),
           ),
         ),
         floatingActionButton: answered

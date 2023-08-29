@@ -1,9 +1,11 @@
 import 'package:bible_quiz/helper/Constants.dart';
 import 'package:bible_quiz/ui/StartPage.dart';
 import 'package:flutter/material.dart';
+import 'package:games_services/games_services.dart';
 
 void main() async {
   runApp(MyApp());
+  GamesServices.signIn();
 }
 
 class MyApp extends StatelessWidget {

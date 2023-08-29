@@ -66,7 +66,7 @@ class _State extends QuizStateFramework<Quiz> {
           padding: EdgeInsets.only(top: 16, left: DeviceTypeHelper.getRootContainerPadding(context).left, right: DeviceTypeHelper.getRootContainerPadding(context).right),
           width: MediaQuery.of(context).size.width,
           child: Column(
-            children: getMainContent(currentType, MediaQuery.of(context).orientation),
+            children: getMainContent(currentType, MediaQuery.of(context)),
           ),
         ),
         floatingActionButton: answered

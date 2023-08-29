@@ -657,7 +657,14 @@ class Question {
         difficulty: 15,
         solutionNoteURL: ["https://www.bible.com/de/bible/157/mat.27.45-54"],
         solutionNoteHuman: ["Matthäus 27:45-54"],
-        imagePath: "jesus-am-kreuz.png")
+        imagePath: "jesus-am-kreuz.png"),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "Mit was wird eine zänkische Frau verglichen",
+        answers: ["Tropfendes Gebälk", "Feuchten Decke", "Quietschenden Tür", "Ein tropfendes Dach"],
+        solutionIndex: 3,
+        difficulty: 10,
+        solutionNoteURL: ["https://www.bible.com/de/bible/157/PRO.27.15"])
   ];
 }
 

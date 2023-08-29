@@ -1,6 +1,6 @@
+import 'package:bible_quiz/helper/DeviceTypeHelper.dart';
 import 'package:bible_quiz/helper/TimerScoreCalculator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:games_services/games_services.dart';
 
@@ -48,7 +48,7 @@ class _ResultState extends State<Result> {
       result = ResultType.silver;
     } else {
       text =
-          "Glückwunsch, du hast ${widget.correctAnswered} von ${widget.totalQuestions} Fragen richtig beantwortet, du bist Bibelexperte. Aber auch du darfst dich darauf freuen in der Bibel immer wieder neues zu erfahren.";
+      "Glückwunsch, du hast ${widget.correctAnswered} von ${widget.totalQuestions} Fragen richtig beantwortet, du bist Bibelexperte. Aber auch du darfst dich darauf freuen in der Bibel immer wieder neues zu erfahren.";
       result = ResultType.gold;
     }
   }
@@ -57,7 +57,8 @@ class _ResultState extends State<Result> {
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
     Orientation currentOrientation = MediaQuery.of(context).orientation;
-    double widthHeightTrophy = currentOrientation == Orientation.portrait ? MediaQuery.of(context).size.width / 2 : MediaQuery.of(context).size.height / (Device.get().isTablet ? 2 : 3);
+    double widthHeightTrophy =
+        currentOrientation == Orientation.portrait ? MediaQuery.of(context).size.width / 2 : MediaQuery.of(context).size.height / (DeviceTypeHelper.deviceIsTablet(context) ? 2 : 3);
 
     return Scaffold(
         appBar: AppBar(
@@ -79,8 +80,8 @@ class _ResultState extends State<Result> {
                         color: result == ResultType.bronze
                             ? bronze
                             : result == ResultType.silver
-                                ? silver
-                                : gold,
+                            ? silver
+                            : gold,
                         width: widthHeightTrophy,
                         height: widthHeightTrophy,
                       ),

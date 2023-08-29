@@ -1,3 +1,4 @@
+import 'package:bible_quiz/helper/DialogHelper.dart';
 import 'package:bible_quiz/ui/BiblionaireMode.dart';
 import 'package:bible_quiz/ui/CustomCard.dart';
 import 'package:bible_quiz/ui/QuizFilter.dart';
@@ -18,7 +19,6 @@ class _State extends State<StartPage> {
   @override
   void initState() {
     super.initState();
-    GamesServices.signIn();
   }
 
   @override
@@ -63,12 +63,12 @@ class _State extends State<StartPage> {
                         ),*/
                         Expanded(
                             child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Quiz starten",
-                            style: TextStyle(color: themeData.textTheme.displayLarge?.color, fontSize: 16),
-                          ),
-                        ))
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Quiz starten",
+                                style: TextStyle(color: themeData.textTheme.displayLarge?.color, fontSize: 16),
+                              ),
+                            ))
                       ],
                     ),
                     height: 80,
@@ -86,11 +86,11 @@ class _State extends State<StartPage> {
                     content: Row(children: [
                       Expanded(
                           child: Container(
-                        alignment: Alignment.center,
-                        //padding: EdgeInsets.all(16),
-                        child: Text(
-                          "Wer wird Biblionär?",
-                          style: TextStyle(color: themeData.textTheme.displayLarge?.color, fontSize: 16),
+                            alignment: Alignment.center,
+                            //padding: EdgeInsets.all(16),
+                            child: Text(
+                              "Wer wird Biblionär?",
+                              style: TextStyle(color: themeData.textTheme.displayLarge?.color, fontSize: 16),
                         ),
                       )),
                       /*Container(
@@ -101,50 +101,91 @@ class _State extends State<StartPage> {
                     height: 80,
                     backgroundColor: Constants.uiSelectableColor /*.withOpacity(0.3)*/,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomCard.withContent(
-                        widthPercentage: 0.3,
-                        tapAble: true,
-                        callback: _showLeaderboards,
-                        //text: "Quiz starten",
-                        content: Row(
+                  FutureBuilder<bool>(
+                    future: GameAuth.isSignedIn,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (snapshot.data == true) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            CustomCard.withContent(
+                              widthPercentage: DeviceTypeHelper.deviceIsPhone(context) ? 0.3 : 0.25,
+                              tapAble: true,
+                              callback: _showLeaderboards,
+                              //text: "Quiz starten",
+                              content: Row(
+                                children: [
+                                  Expanded(
+                                      child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Bestenliste",
+                                      style: TextStyle(color: themeData.textTheme.displayLarge?.color, fontSize: 16),
+                                    ),
+                                  ))
+                                ],
+                              ),
+                              height: 50,
+                              backgroundColor: Constants.googlePlayColor /*.withOpacity(0.3)*/,
+                            ),
+                            CustomCard.withContent(
+                              widthPercentage: DeviceTypeHelper.deviceIsPhone(context) ? 0.3 : 0.25,
+                              tapAble: true,
+                              callback: _showAchievements,
+                              //text: "Quiz starten",
+                              content: Row(
+                                children: [
+                                  Expanded(
+                                      child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Erfolge",
+                                      style: TextStyle(color: themeData.textTheme.displayLarge?.color, fontSize: 16),
+                                    ),
+                                  ))
+                                ],
+                              ),
+                              height: 50,
+                              backgroundColor: Constants.googlePlayColor /*.withOpacity(0.3)*/,
+                            ),
+                          ],
+                        );
+                      } else {
+                        return CustomCard.withContent(
+                          widthPercentage: 0.4,
+                          tapAble: true,
+                          callback: () async {
+                            try {
+                              await GameAuth.signIn();
+                            } catch (e) {
+                              DialogHelper().showInformationDialog(context, "Google Play Spiele",
+                                  "Der Login bei Google Spiele war nicht erfolgreich. Stelle sicher, dass du auf deinem Gerät die Play Spiele App von Google installiert hast.");
+                            }
+                          },
+                          content: Row(children: [
                             Expanded(
                                 child: Container(
                               alignment: Alignment.center,
+                              //padding: EdgeInsets.all(16),
                               child: Text(
-                                "Bestenliste",
+                                "Play Spiele",
                                 style: TextStyle(color: themeData.textTheme.displayLarge?.color, fontSize: 16),
                               ),
-                            ))
-                          ],
-                        ),
-                        height: 50,
-                        backgroundColor: Constants.googlePlayColor /*.withOpacity(0.3)*/,
-                      ),
-                      CustomCard.withContent(
-                        widthPercentage: 0.3,
-                        tapAble: true,
-                        callback: _showAchievements,
-                        //text: "Quiz starten",
-                        content: Row(
-                          children: [
-                            Expanded(
-                                child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Erfolge",
-                                style: TextStyle(color: themeData.textTheme.displayLarge?.color, fontSize: 16),
-                              ),
-                            ))
-                          ],
-                        ),
-                        height: 50,
-                        backgroundColor: Constants.googlePlayColor /*.withOpacity(0.3)*/,
-                      ),
-                    ],
+                            )),
+                            /*Container(
+                        child: SvgPicture.asset("lib/assets/playing-card.svg", semanticsLabel: 'Quiz Logo'),
+                        width: 150,
+                      ),*/
+                          ]),
+                          height: 80,
+                          backgroundColor: Constants.googlePlayColor /*.withOpacity(0.3)*/,
+                        );
+                      }
+                    },
                   )
                 ],
               )
