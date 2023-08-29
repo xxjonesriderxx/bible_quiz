@@ -62,13 +62,15 @@ class Question {
     int newSolutionIndex = randomizedAnswers.indexOf(question.answers[question.solutionIndex]);
 
     return Question(
-      chapter: question.chapter,
-      question: question.question,
-      answers: randomizedAnswers,
-      solutionIndex: newSolutionIndex,
-      difficulty: question.difficulty,
-      imagePath: question.imagePath,
-    );
+        imagePath: question.imagePath,
+        chapter: question.chapter,
+        question: question.question,
+        answers: randomizedAnswers,
+        solutionIndex: newSolutionIndex,
+        difficulty: question.difficulty,
+        solutionNoteHuman: question.solutionNoteHuman,
+        solutionNoteURL: question.solutionNoteURL,
+        tip: question.tip);
   }
 
   static int getCountOfQuestions(Chapter chapter) {
@@ -102,7 +104,8 @@ class Question {
         answers: const ["In Jericho", "In Babylon", "In Babel", "In Sinai"],
         solutionIndex: 2,
         difficulty: 3,
-        imagePath: "towerOfBabelIsBuilt.png"),
+        imagePath: "towerOfBabelIsBuilt.png",
+        solutionNoteURL: ["https://www.bible.com/de/bible/73/gen.11.1-9"]),
     Question(
         chapter: const [Chapter.altesTestament],
         question: "Aus was erschuf Gott die Frau?",
@@ -659,13 +662,27 @@ class Question {
         solutionNoteHuman: ["Matthäus 27:45-54"],
         imagePath: "jesus-am-kreuz.png"),
     Question(
-        chapter: const [Chapter.altesTestament],
+        chapter: const [Chapter.altesTestament, Chapter.Sprueche],
         question: "Mit was wird eine zänkische Frau verglichen",
         answers: ["Tropfendes Gebälk", "Feuchten Decke", "Quietschenden Tür", "Ein tropfendes Dach"],
         solutionIndex: 3,
         difficulty: 10,
-        solutionNoteURL: ["https://www.bible.com/de/bible/157/PRO.27.15"])
+        solutionNoteURL: ["https://www.bible.com/de/bible/157/PRO.27.15"]),
+    Question(
+        chapter: const [Chapter.altesTestament],
+        question: "Wer wurde in einem feurigen Wagen empor gehoben.",
+        answers: ["Elisa", "Joel", "Elia", "Jona"],
+        solutionIndex: 2,
+        difficulty: 8,
+        solutionNoteURL: ["https://www.bible.com/de/bible/73/2KI.2.1-18"]),
+    Question(
+        chapter: const [Chapter.altesTestament, Chapter.Sprueche],
+        question: "Der Umgang mit den Weisen macht ..., wer sich aber mit Narren einlässt ...",
+        answers: ["reich ... wird arm", "weise ... wird dumm", "weise ... dem geht es schlecht", "aufmerksam ... wird nachlässig"],
+        solutionIndex: 2,
+        difficulty: 12,
+        solutionNoteURL: ["https://www.bible.com/de/bible/73/pro.13.20"])
   ];
 }
 
-enum Chapter { alles, neuesTestament, altesTestament, juengerUndApostel, Josua, Mose, Jesus, Koenige }
+enum Chapter { alles, neuesTestament, altesTestament, juengerUndApostel, Josua, Mose, Jesus, Koenige, Sprueche }
